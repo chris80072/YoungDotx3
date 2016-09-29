@@ -1,0 +1,159 @@
+﻿@using Newtonsoft.Json
+@model YoungDotx3.Models.Calendar.MonthModels
+
+@*
+
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+*@
+
+@Styles.Render("~/Content/fullcalendar")
+@Scripts.Render("~/bundles/fullcalendar")
+
+<script>
+
+    $(document).ready(function() {
+
+        var eventsData = @Html.Raw(Json.Encode(Model.Messages));
+        var today = @Html.Raw(Json.Encode(Model.Today));
+
+        $('#calendar').fullCalendar({
+            buttonText: {
+                today: '今天',
+                month: '月視'
+            },
+            monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+            dayNames: ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+            header: {
+                left: 'today',
+                center: 'title',
+                right: 'prev,next'
+            },
+            defaultDate: today,
+            navLinks: false, // can click day/week names to navigate views
+            editable: false,
+            //eventClick: function (calEvent, jsEvent, view) {
+            dayClick: function(date, jsEvent, view) {
+                showMesseageModal(date._i);
+            },
+            //viewRender: function (view, element) {
+            //    alert(view.title);
+            //},
+            events: eventsData
+        });
+
+        function showMesseageModal(date) {
+            $('#modal-message').modal('show');
+        }
+
+        $('#btn-cancel').on('click', function() {
+            $('#message').val('');
+            $('#modal-message').modal('hide');
+        });
+
+        $('#btn-send').on('click', function() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Create", "HappyBirthday")",
+                data: { "nickname": $('#nickname').val(), "message": $('#message').val() },
+                dataType: "json",
+                headers: {
+                    'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
+                },
+                success: function(result) {
+                    @*if (checkTimeout(result)) {
+                        if (result.Result == true) {
+                            $.notify("@Resources.Language.Connected", 'success');
+                        } else {
+                            $.notify("@Resources.Language.ConnectFail", 'danger');
+                        }
+                    }*@
+
+                    //$('#message').val('');
+                    //$('#modal-message').modal('hide');
+                },
+                error: function (result) {
+                    @*if (checkTimeout(result)) {
+                        $.notify("@Resources.Language.ConnectFail", 'danger');
+                    }*@
+                }
+            });
+        });
+    });
+
+</script>
+<style>
+    .content {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0;
+        font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+        font-size: 14px;
+    }
+
+    #calendar {
+        margin-top: 100px;
+    }
+
+    #calendar .fc-day-grid-container {
+        overflow-y: hidden !important;
+    }
+
+    .textarea-message {
+        resize: none;
+    }
+
+    .modal-body {
+        background-color: #E8F4FB;
+        border-radius: 5px;
+    }
+
+    .glyphicon {
+        font-size: 24px;
+    }
+
+    .btn-cancel, .btn-send {
+        float: right;
+        margin-left: 15px;
+    }
+</style>
+
+<div class="content">
+    <div id="calendar"></div>
+</div>
+
+<div id="modal-message" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-sm-10">
+                            <input id="nickname" class="form-control text-nickname" type="text" placeholder="暱稱..  (限20字)" maxlength="20"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-sm-10">
+                            <textarea id="message" class="form-control textarea-message" placeholder="生日留言..    (限500字)" maxlength="500" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="button-group col-sm-offset-2 col-sm-10">
+                            <button type="button" id="btn-send" class="btn btn-default btn-primary btn-send">送出</button>
+                            <button type="button" id="btn-cancel" class="btn btn-default btn-cancel">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
