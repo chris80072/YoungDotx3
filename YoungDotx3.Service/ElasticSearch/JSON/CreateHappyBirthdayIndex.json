@@ -1,0 +1,23 @@
+//http://localhost:9200/youngdotx3/
+
+{
+  "mappings": {
+    "happybirthdaymessage": {
+      "properties": {
+        "nickname": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "createdate": {
+          "type": "date",
+          "format": "yyyy-MM-dd"
+        },
+          "color": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

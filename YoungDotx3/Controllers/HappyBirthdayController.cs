@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using Newtonsoft.Json;
 using YoungDotx3.Filters;
 using YoungDotx3.Models.Calendar;
@@ -15,28 +16,28 @@ namespace YoungDotx3.Controllers
     {
         public ActionResult Index()
         {
+            Service.HappyBirthdayService service = new Service.HappyBirthdayService();
+            var messages = service.GetMessagesByMonth("2016-10");
             MonthModels month = new MonthModels();
+            month.Messages.AddRange(messages.Select(val => new MessageModels(val)));
             return View(month);
         }
 
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
         [AjaxValidateAntiForgeryToken]
-        public ActionResult Create(string nickname, string message)
+        public ActionResult Create(string nickname, string content, string color, string createDate)
         {
-            bool result = false;
-            //DingTalkService dingTalkService = new DingTalkService(Session.CurrnetUser());
-            //DingTalkSetting setting = dingTalkService.GetDingTalkSetting();
+            var message = new Domain.Calendar.Message
+            {
+                Nickname = nickname,
+                Content = content,
+                Color = color,
+                CreateDate = createDate
+            };
 
-            //if (!string.IsNullOrEmpty(corpId) && !string.IsNullOrEmpty(corpSecret))
-            //{
-            //    if (corpId.IndexOf("*", StringComparison.Ordinal) < 0)
-            //        setting.CorpId = corpId;
-            //    if (corpSecret.IndexOf("*", StringComparison.Ordinal) < 0)
-            //        setting.CorpSecret = corpSecret;
-
-            //    result = dingTalkService.TestConnection(setting.CorpId, setting.CorpSecret);
-            //}
+            Service.HappyBirthdayService service = new Service.HappyBirthdayService();
+            bool result = service.CreateMessage(message);
 
             return Content(JsonConvert.SerializeObject(new { Result = result }), "application/json");
         }

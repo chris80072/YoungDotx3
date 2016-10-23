@@ -50,7 +50,7 @@
         }
 
         $('#btn-cancel').on('click', function() {
-            $('#message').val('');
+            $('#content').val('');
             $('#modal-message').modal('hide');
         });
 
@@ -58,19 +58,20 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Create", "HappyBirthday")",
-                data: { "nickname": $('#nickname').val(), "message": $('#message').val() },
+                data: { "nickname": $('#nickname').val(), "content": $('#content').val(), "color": "#3b91ad", "createDate": "2016-10-31" },
                 dataType: "json",
                 headers: {
                     'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
                 },
                 success: function(result) {
-                    @*if (checkTimeout(result)) {
+                    if (checkTimeout(result)) {
                         if (result.Result == true) {
-                            $.notify("@Resources.Language.Connected", 'success');
+                            location.reload();
+                            @*$.notify("@Resources.Language.Connected", 'success');*@
                         } else {
-                            $.notify("@Resources.Language.ConnectFail", 'danger');
+                            @*$.notify("@Resources.Language.ConnectFail", 'danger');*@
                         }
-                    }*@
+                    }
 
                     //$('#message').val('');
                     //$('#modal-message').modal('hide');
@@ -79,14 +80,14 @@
                     @*if (checkTimeout(result)) {
                         $.notify("@Resources.Language.ConnectFail", 'danger');
                     }*@
-                }
-            });
+                        }
+                    });
+                });
         });
-    });
 
 </script>
 <style>
-    .content {
+    .main-content {
         max-width: 900px;
         margin: 0 auto;
         padding: 0;
@@ -102,7 +103,7 @@
         overflow-y: hidden !important;
     }
 
-    .textarea-message {
+    .textarea-content {
         resize: none;
     }
 
@@ -121,7 +122,7 @@
     }
 </style>
 
-<div class="content">
+<div class="main-content">
     <div id="calendar"></div>
 </div>
 
@@ -143,7 +144,7 @@
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </div>
                         <div class="col-sm-10">
-                            <textarea id="message" class="form-control textarea-message" placeholder="生日留言..    (限500字)" maxlength="500" rows="10"></textarea>
+                            <textarea id="content" class="form-control textarea-content" placeholder="生日留言..    (限500字)" maxlength="500" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="form-group">

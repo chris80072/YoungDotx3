@@ -49,6 +49,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -112,9 +116,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -258,6 +259,10 @@
     <ProjectReference Include="..\YoungDotx3.Domain\YoungDotx3.Domain.csproj">
       <Project>{368a9a23-4d7f-400b-96aa-b39391c39486}</Project>
       <Name>YoungDotx3.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungDotx3.Service\YoungDotx3.Service.csproj">
+      <Project>{17cc0109-1d5c-4bff-8cb4-726719c68ac7}</Project>
+      <Name>YoungDotx3.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

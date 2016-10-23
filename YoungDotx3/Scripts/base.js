@@ -5,3 +5,7 @@
         }
     }
 });
+
+function checkTimeout(obj) {
+    return true;
+}
