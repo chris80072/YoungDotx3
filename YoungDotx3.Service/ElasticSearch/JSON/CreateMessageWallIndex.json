@@ -1,0 +1,19 @@
+//http://localhost:9200/youngdotx3/_mapping/messagewall
+
+{
+  "properties": {
+    "nickname": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "createdatetime": {
+      "type":   "date",
+      "format": "yyyy-MM-dd HH:mm:ss"
+    },
+      "ip": {
+      "type": "string"
+    }
+  }
+}

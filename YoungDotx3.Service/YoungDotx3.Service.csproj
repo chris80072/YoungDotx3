@@ -50,11 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HappyBirthdayService.cs" />
+    <Compile Include="MessageWallService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebRequstService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ElasticSearch\JSON\CreateHappyBirthdayIndex.json" />
+    <None Include="ElasticSearch\JSON\CreateMessageWallIndex.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

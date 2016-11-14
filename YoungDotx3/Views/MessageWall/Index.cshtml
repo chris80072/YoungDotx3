@@ -1,0 +1,200 @@
+﻿@model List<YoungDotx3.Models.MessageWall.MessageModels>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        function createMessage() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Create", "MessageWall")",
+                data: { "nickname": $('#nickname').val(), "content": $('#content').val() },
+            dataType: "json",
+            headers: {
+                'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
+            },
+            success: function(result) {
+                if (checkTimeout(result)) {
+
+                    if (result.isSuccess) {
+                        $('#content').val('');
+                        createMessageUI(result.messageModel);
+                    } else {
+                        alertMessage('新增失敗，請稍後再試！', 'danger');
+                    }
+                }
+            },
+            error: function(result) {
+                    alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
+                }
+            });
+        }
+
+        function createMessageUI(messageModel) {
+            var html = '';
+            html += '<div class="panel panel-default">';
+            html += '   <div class="panel-content">';
+            html += '       <div class="panel-header">';
+            html += '           <strong class="fullname">' + messageModel.Nickname + '</strong>';
+            html += '           <small class="time">';
+            html += '               <span>' + messageModel.CreateDateTime + '</span>';
+            html += '           </small>';
+            html += '       </div>';
+            html += '       <div class="panel-body">';
+            var lines = messageModel.Content.split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                html += '       <p>' + lines[i] + '</p>';
+            }
+            html += '       </div>';
+            html += '   </div>';
+            html += '</div>';
+
+            $('.leave-message').after(html);
+        }
+
+        function alertMessage(message, type) {
+            $('#alert-message').html(message);
+
+            if (type === 'success')
+                $('.modal-alert').css('background-color', '#dff0d8');
+            else if (type === 'danger')
+                $('.modal-alert').css('background-color', '#f2dede');
+            else
+                $('.modal-alert').css('background-color', '#ffffff');
+
+            $('#modal-alert').modal('show');
+            setTimeout(function () { $('#modal-alert').modal('hide'); }, 3000);
+        }
+
+        $('#nickname, #content').on('focus', function () {
+            $('.panel-leave-message').css('background-color', '#e8f4fb');
+        });
+
+        $('#nickname, #content').on('blur', function () {
+            $('.panel-leave-message').css('background-color', '#ffffff');
+        });
+
+        $('#btn-cancel').on('click', function() {
+            $('#nickname, #content').val('');
+        });
+
+        $('#btn-send').on('click', function () {
+            if ($('#nickname').val() === '') {
+                alertMessage('請輸入暱稱！', 'danger');
+                $('#nickname').trigger('focus');
+            } else if ($('#content').val() === '') {
+                alertMessage('請輸入內容！', 'danger');
+                $('#content').trigger('focus');
+            } else {
+                createMessage();
+            }
+        });
+    });
+</script>
+
+<style>
+    .main-body {
+        background-color: #ffffff;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .center {
+        width: 500px;
+        margin: 0 auto;
+        min-height: 100px;
+    }
+
+    .leave-message {
+        padding-top: 10%;
+    }
+    .panel-content {
+        margin: 20px;
+    }
+
+    .fullname {
+        font-weight: bold;
+        color: #292f33;
+    }
+
+    .time:before {
+        content: "\00b7";
+    }
+
+    .time {
+        font-size: 13px;
+        color: #8899a6;
+    }
+
+    .btn-send, .btn-cancel {
+        float: right;
+        margin-left: 15px;
+    }
+</style>
+
+<div class="main-body">
+    <div class="center" id="center-content">
+        <div class="leave-message">
+            <div class="panel panel-default panel-leave-message">
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                @*<span class="glyphicon glyphicon-user" aria-hidden="true"></span>*@
+                            </div>
+                            <div class="col-sm-10">
+                                <input id="nickname" class="form-control text-nickname" type="text" placeholder="暱稱..  (限20字)" maxlength="20"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                @*<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>*@
+                            </div>
+                            <div class="col-sm-10">
+                                <textarea id="content" class="form-control textarea-content" placeholder="留言..  (限500字)" maxlength="500" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="button-group col-sm-offset-2 col-sm-10">
+                                <button type="button" id="btn-send" class="btn btn-default btn-primary btn-send">送出</button>
+                                <button type="button" id="btn-cancel" class="btn btn-default btn-cancel">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @{
+            var messages = Model;
+            foreach (var aMessage in messages)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-content">
+                        <div class="panel-header">
+                            <strong class="fullname">@aMessage.Nickname</strong>
+                            <small class="time">
+                                <span>@aMessage.CreateDate</span>
+                            </small>
+                        </div>
+                        <div class="panel-body">
+                            @foreach (var line in aMessage.Content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <p>@line</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div id="modal-alert" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content modal-alert">
+            <div class="modal-body">
+                <label id="alert-message"></label>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

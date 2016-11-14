@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace YoungDotx3.Domain.Calendar
+namespace YoungDotx3.Domain.MessageWall
 {
     public class Message
     {
@@ -26,10 +25,9 @@ namespace YoungDotx3.Domain.Calendar
             get { return _content; }
             set { _content = value.Length > 500 ? value.Substring(0, 500) : value; }
         }
-        public string CreateDate { get; set; } = string.Empty;
-        public string Color { get; set; } = string.Empty;
+        public string CreateDateTime { get; set; } = string.Empty;
 
-        public string GetCreateMessageJson()
+        public string GetCreateMessageJson(string ip)
         {
             StringWriter sw = new StringWriter();
             JsonTextWriter jsonText = new JsonTextWriter(sw);
@@ -38,18 +36,13 @@ namespace YoungDotx3.Domain.Calendar
             jsonText.WriteValue(Nickname);
             jsonText.WritePropertyName("content");
             jsonText.WriteValue(Content);
-            jsonText.WritePropertyName("color");
-            jsonText.WriteValue(Color);
-            jsonText.WritePropertyName("createdate");
-            jsonText.WriteValue(CreateDate);
+            jsonText.WritePropertyName("createdatetime");
+            jsonText.WriteValue(CreateDateTime);
+            jsonText.WritePropertyName("ip");
+            jsonText.WriteValue(ip);
             jsonText.WriteEndObject();
 
             return sw.ToString(); ;
-        }
-
-        public static explicit operator Message(JToken v)
-        {
-            throw new NotImplementedException();
         }
     }
 }
