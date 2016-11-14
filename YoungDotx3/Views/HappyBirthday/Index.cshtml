@@ -28,13 +28,26 @@
             editable: false,
             //eventClick: function (calEvent, jsEvent, view) {
             dayClick: function(date, jsEvent, view) {
-                showMesseageModal(date._i);
+                if(checkDate(date._d))
+                    showMesseageModal(date._d);
             },
             //viewRender: function (view, element) {
             //    alert(view.title);
             //},
             events: eventsData
         });
+
+        function checkDate(date) {
+            var dataNow = new Date();
+            var enddate = new Date();
+            enddate.setMonth(enddate.getMonth()+4);
+            enddate.setDate(1);
+            enddate.setDate(enddate.getDate()-1);
+            if (date > dataNow && date < enddate)
+                return true;
+            else 
+                return false;
+        }
 
         function showMesseageModal(date) {
             $('#modal-message').modal('show');
@@ -78,13 +91,19 @@
 
 </script>
 <style>
-    .main-content {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 0;
-        font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-        font-size: 14px;
+
+    .main-body {
         background-color: #ffffff;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .center {
+        width: auto;
+        height: auto;
+        margin: 0 auto;
+        min-width: 100px;
+        min-height: 100px;
     }
 
     #calendar {
@@ -114,9 +133,10 @@
     }
 </style>
 
-<div class="main-content">
+<div class="main-body">
     <div class="center" id="center-content">
-    <div id="calendar"></div>
+        <div id="calendar"></div>
+    </div>
 </div>
 
 <div id="modal-message" class="modal fade">
