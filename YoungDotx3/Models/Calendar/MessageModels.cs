@@ -9,7 +9,7 @@ namespace YoungDotx3.Models.Calendar
     {
         public MessageModels(Domain.Calendar.Message message)
         {
-            this.title = message.Content;
+            this.title = message.Nickname + " created a message.";
             this.start = message.CreateDate;
             this.color = message.Color;
         }

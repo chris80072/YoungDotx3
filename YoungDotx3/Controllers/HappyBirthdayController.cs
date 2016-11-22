@@ -17,8 +17,9 @@ namespace YoungDotx3.Controllers
         public ActionResult Index()
         {
             Service.HappyBirthdayService service = new Service.HappyBirthdayService();
-            var messages = service.GetMessagesByMonth("2016-10");
             MonthModels month = new MonthModels();
+            month.Today = DateTime.Now.ToString("yyyy-MM-dd");
+            var messages = service.GetMessagesByMonth();
             month.Messages.AddRange(messages.Select(val => new MessageModels(val)));
             return View(month);
         }
@@ -28,16 +29,21 @@ namespace YoungDotx3.Controllers
         [AjaxValidateAntiForgeryToken]
         public ActionResult Create(string nickname, string content, string color, string createDate)
         {
-            var message = new Domain.Calendar.Message
-            {
-                Nickname = nickname,
-                Content = content,
-                Color = color,
-                CreateDate = createDate
-            };
+            bool result = false;
 
-            Service.HappyBirthdayService service = new Service.HappyBirthdayService();
-            bool result = service.CreateMessage(message);
+            if (Convert.ToDateTime(createDate) > DateTime.Now)
+            {
+                var message = new Domain.Calendar.Message
+                {
+                    Nickname = nickname,
+                    Content = content,
+                    Color = color,
+                    CreateDate = createDate
+                };
+
+                Service.HappyBirthdayService service = new Service.HappyBirthdayService();
+                result = service.CreateMessage(message);
+            }
 
             return Content(JsonConvert.SerializeObject(new { Result = result }), "application/json");
         }

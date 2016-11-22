@@ -24,16 +24,16 @@ namespace YoungDotx3.Service
 
         private readonly string _elasticSearchPath;
 
-        public List<Message> GetMessagesByMonth(string date)
+        public List<Message> GetMessagesByMonth()
         {
             string response = string.Empty;
             List<Message> result = new List<Message>();
 
             try
             {
-                var datetime = Convert.ToDateTime(date);
-                var firstDayOfMonth = new DateTime(datetime.Year, datetime.Month, 1);
-                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                var today = DateTime.Now;
+                var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+                var lastDayOfMonth = firstDayOfMonth.AddMonths(4).AddDays(-1);
                 string json = "{\"query\": {\"range\" : {\"createdate\" : {\"gte\": \"" + firstDayOfMonth.ToString(DateTimeFormat.DateWithHyphen) + "\", \"lte\": \"" + lastDayOfMonth.ToString(DateTimeFormat.DateWithHyphen) + "\"}}}}";
 
                 string url = _elasticSearchPath + "happybirthdaymessage/_search";
@@ -50,8 +50,16 @@ namespace YoungDotx3.Service
                     JArray hits = property.GetValue("hits") as JArray;
                     foreach (var aHit in hits)
                     {
-                        JObject aMessageJson = aHit as JObject;
-                        Message message = JsonConvert.DeserializeObject<Message>(aMessageJson.GetValue("_source").ToString());
+                        JObject hit = aHit as JObject;
+                        JObject source = hit.GetValue("_source") as JObject;
+                        Message message = new Message
+                        {
+                            Nickname = source.GetValue("nickname").ToString(),
+                            Content = source.GetValue("content").ToString(),
+                            Color = source.GetValue("color").ToString(),
+                            CreateDate = Convert.ToDateTime(source.GetValue("createdate")).ToString(DateTimeFormat.DateWithHyphen),
+                        };
+                        //Message message = JsonConvert.DeserializeObject<Message>(aMessageJson.GetValue("_source").ToString());
                         result.Add(message);
                     }
                 }
@@ -61,7 +69,7 @@ namespace YoungDotx3.Service
             catch (Exception e)
             {
                 log.Error($"Response = {response}", e);
-                throw;
+                return new List<Message>();
             }
         }
 
