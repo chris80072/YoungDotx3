@@ -31,13 +31,13 @@ namespace YoungDotx3.Controllers
             {
                 Nickname = nickname,
                 Content = content,
-                CreateDateTime = DateTime.Now.ToString(DateTimeFormat.ElasticDateTimeMappingFormat)
+                CreateDateTime = DateTime.Now
             };
 
             Service.MessageWallService service = new Service.MessageWallService();
             bool result = service.CreateMessage(message);
 
-            return Content(JsonConvert.SerializeObject(new { isSuccess = result, messageModel = message }), "application/json");
+            return Content(JsonConvert.SerializeObject(new { isSuccess = result, messageModel = new MessageModels(message) }), "application/json");
         }
     }
 }

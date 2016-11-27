@@ -25,7 +25,7 @@ namespace YoungDotx3.Domain.MessageWall
             get { return _content; }
             set { _content = value.Length > 500 ? value.Substring(0, 500) : value; }
         }
-        public string CreateDateTime { get; set; } = string.Empty;
+        public DateTime CreateDateTime { get; set; }
 
         public string GetCreateMessageJson(string ip)
         {
@@ -37,9 +37,11 @@ namespace YoungDotx3.Domain.MessageWall
             jsonText.WritePropertyName("content");
             jsonText.WriteValue(Content);
             jsonText.WritePropertyName("createdatetime");
-            jsonText.WriteValue(CreateDateTime);
+            jsonText.WriteValue(CreateDateTime.ToString(DateTimeFormat.ElasticDateTimeMappingFormat));
             jsonText.WritePropertyName("ip");
             jsonText.WriteValue(ip);
+            jsonText.WritePropertyName("isdelete");
+            jsonText.WriteValue(false);
             jsonText.WriteEndObject();
 
             return sw.ToString(); ;

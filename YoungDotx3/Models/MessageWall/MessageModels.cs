@@ -12,12 +12,14 @@ namespace YoungDotx3.Models.MessageWall
             this.Id = message.Id;
             this.Nickname = message.Nickname;
             this.Content = message.Content;
-            this.CreateDate = message.CreateDateTime;
+            this.CreateDate = message.CreateDateTime.ToString(Domain.DateTimeFormat.DateWithHyphen);
+            this.CreateTime = message.CreateDateTime.ToString(Domain.DateTimeFormat.Time);
         }
 
         public string Id { get; set; }
         public string Nickname { get; set; }
         public string Content { get; set; }
         public string CreateDate { get; set; }
+        public string CreateTime { get; set; }
     }
 }

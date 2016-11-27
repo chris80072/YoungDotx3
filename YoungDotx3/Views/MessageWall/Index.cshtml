@@ -31,24 +31,22 @@
 
         function createMessageUI(messageModel) {
             var html = '';
-            html += '<div class="panel panel-default">';
-            html += '   <div class="panel-content">';
-            html += '       <div class="panel-header">';
-            html += '           <strong class="fullname">' + messageModel.Nickname + '</strong>';
-            html += '           <small class="time">';
-            html += '               <span>' + messageModel.CreateDateTime + '</span>';
-            html += '           </small>';
-            html += '       </div>';
-            html += '       <div class="panel-body">';
+            html += '<li class="">';
+            html += '   <span class="fa fa-envelope tag is-info"></span>';
+            html += '   <div class="timeline-item">';
+            html += '       <span class="time"><i class="fa fa-clock-o"></i>' + messageModel.CreateTime + '</span>';
+            html += '       <h3 class="timeline-header">' + messageModel.Nickname + '</h3>';
+            html += '       <div class="timeline-body">';
             var lines = messageModel.Content.split('\n');
             for (var i = 0; i < lines.length; i++) {
                 html += '       <p>' + lines[i] + '</p>';
             }
             html += '       </div>';
+            html += '       <div class="timeline-footer"></div>';
             html += '   </div>';
-            html += '</div>';
+            html += '</li>';
 
-            $('.leave-message').after(html);
+            $('#leave-message').after(html);
         }
 
         function alertMessage(message, type) {
@@ -65,13 +63,13 @@
             setTimeout(function () { $('#modal-alert').modal('hide'); }, 3000);
         }
 
-        $('#nickname, #content').on('focus', function () {
-            $('.panel-leave-message').css('background-color', '#e8f4fb');
-        });
+        //$('#nickname, #content').on('focus', function () {
+        //    $('.panel-leave-message').css('background-color', '#e8f4fb');
+        //});
 
-        $('#nickname, #content').on('blur', function () {
-            $('.panel-leave-message').css('background-color', '#ffffff');
-        });
+        //$('#nickname, #content').on('blur', function () {
+        //    $('.panel-leave-message').css('background-color', '#ffffff');
+        //});
 
         $('#btn-cancel').on('click', function() {
             $('#nickname, #content').val('');
@@ -92,21 +90,20 @@
 </script>
 
 <style>
+    h3 {
+        font-weight: bold;
+    }
+
     .main-body {
-        background-color: #ffffff;
-        margin: 0 auto;
+        margin: 50px auto;
         padding: 20px;
     }
 
     .center {
-        width: 500px;
         margin: 0 auto;
         min-height: 100px;
     }
 
-    .leave-message {
-        padding-top: 10%;
-    }
     .panel-content {
         margin: 20px;
     }
@@ -116,76 +113,252 @@
         color: #292f33;
     }
 
-    .time:before {
-        content: "\00b7";
-    }
-
-    .time {
-        font-size: 13px;
-        color: #8899a6;
-    }
-
     .btn-send, .btn-cancel {
-        float: right;
         margin-left: 15px;
+    }
+
+    /*------------------- timeline ----------------------*/
+
+    .timeline {
+        position: relative;
+        margin: 0 0 30px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #4a4a4a;
+        left: 31px;
+        margin: 0;
+        border-radius: 2px;
+    }
+
+    .timeline>li {
+        position: relative;
+        margin-right: 10px;
+        margin-bottom: 15px;
+    }
+
+    .timeline>li:after {
+        clear: both;
+    }
+
+    .timeline>li:after, .timeline>li:before {
+        content: " ";
+        display: table;
+        box-sizing: border-box;
+    }
+
+    .timeline>li>.fa, .timeline>li>.glyphicon, .timeline>li>.ion {
+        height: 30px;
+        font-size: 15px;
+        line-height: 30px;
+        position: absolute;
+        border-radius: 50%;
+        text-align: center;
+        left: 18px;
+        top: 0;
+    }
+
+    .tag.is-danger {
+        background-color: #ff3860;
+        color: #fff;
+    }
+
+    .tag.is-primary {
+        background-color: #00d1b2;
+        color: #fff;
+    }
+
+    .tag.is-info {
+        background-color: #3273dc;
+        color: #fff;
+    }
+
+    .number, .tag {
+        background-color: #f5f5f5;
+        border-radius: 290486px;
+        vertical-align: top;
+    }
+
+    .tag {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        color: #4a4a4a;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        font-size: 12px;
+        height: 24px;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        line-height: 16px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+
+    .timeline>li>.timeline-item {
+        box-shadow: 0 1px 1px rgba(0,0,0,.1);
+        border-radius: 3px;
+        margin-top: 0;
+        background: #fff;
+        color: #444;
+        margin-left: 60px;
+        margin-right: 15px;
+        padding: 0;
+        position: relative;
+    }
+
+    .timeline>li>.timeline-item>.time {
+        color: #999;
+        float: right;
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    
+    .timeline>li>.timeline-item>.timeline-body, .timeline>li>.timeline-item>.timeline-footer {
+        padding: 12px;
+    }
+
+    .timeline>li>.timeline-item>.timeline-header {
+        margin: 0;
+        color: #555;
+        border-bottom: 1px solid #f4f4f4;
+        padding: 12px;
+        font-size: 16px;
+        line-height: 1.1;
     }
 </style>
 
 <div class="main-body">
     <div class="center" id="center-content">
-        <div class="leave-message">
-            <div class="panel panel-default panel-leave-message">
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <div class="col-sm-2">
-                                @*<span class="glyphicon glyphicon-user" aria-hidden="true"></span>*@
-                            </div>
-                            <div class="col-sm-10">
-                                <input id="nickname" class="form-control text-nickname" type="text" placeholder="暱稱..  (限20字)" maxlength="20"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-2">
-                                @*<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>*@
-                            </div>
-                            <div class="col-sm-10">
-                                <textarea id="content" class="form-control textarea-content" placeholder="留言..  (限500字)" maxlength="500" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="button-group col-sm-offset-2 col-sm-10">
-                                <button type="button" id="btn-send" class="btn btn-default btn-primary btn-send">送出</button>
-                                <button type="button" id="btn-cancel" class="btn btn-default btn-cancel">取消</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        @{
-            var messages = Model;
-            foreach (var aMessage in messages)
-            {
-                <div class="panel panel-default">
-                    <div class="panel-content">
-                        <div class="panel-header">
-                            <strong class="fullname">@aMessage.Nickname</strong>
-                            <small class="time">
-                                <span>@aMessage.CreateDate</span>
-                            </small>
-                        </div>
-                        <div class="panel-body">
-                            @foreach (var line in aMessage.Content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
-                            {
-                                <p>@line</p>
-                            }
-                        </div>
+        <ul class="timeline">
+            <li class="time-label">
+                <span class="fa fa-hourglass-start tag is-danger"></span>
+            </li> 
+            <li id="leave-message" class="">
+                @*<span class="fa fa-envelope tag is-info"></span>*@
+                <div class="timeline-item">
+                    <div id="app" class="timeline-header">
+                        <input id="nickname" class="form-control text-nickname" type="text" placeholder="暱稱..  (限20字)" maxlength="20"/>
+                    </div>
+                    <div class="timeline-body">
+                        <textarea id="content" class="form-control textarea-content" placeholder="留言..  (限500字)" maxlength="500" rows="3"></textarea>
+                    </div> 
+                    <div class="timeline-footer">
+                        <button type="button" id="btn-send" class="btn btn-default btn-primary btn-send">送出</button>
+                        <button type="button" id="btn-cancel" class="btn btn-default btn-cancel">取消</button>
                     </div>
                 </div>
+            </li>   
+            @{
+                var messages = Model;
+                var date = "";
+                var count = 0;
+                foreach (var aMessage in messages)
+                {
+                    if (date != aMessage.CreateDate)
+                    {
+                        <li class="time-label">
+                            <span class="tag is-danger">@aMessage.CreateDate</span>
+                        </li>
+                        date = aMessage.CreateDate;
+                    }
+
+                    <li class="">
+                        @if (count%3 == 0)
+                        {
+                            <span class="fa fa-envelope tag is-info"></span>
+                        }
+                        else if (count%3 == 1)
+                        {
+                            <span class="fa fa-commenting-o tag is-primary"></span>
+                        }
+                        else
+                        {
+                            <span class="fa fa-camera  tag is-danger"></span>
+                        }
+
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i> @aMessage.CreateTime</span>
+                            <h3 class="timeline-header">@aMessage.Nickname</h3>
+                            <div class="timeline-body">
+                                @foreach (var line in aMessage.Content.Split(new[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    <p>@line</p>
+                                }
+                            </div>
+                            <div class="timeline-footer"></div>
+                        </div>
+                    </li>
+
+                    count ++;
+                }
             }
-        }
+            <li class="time-label">
+                <span class="tag is-danger">10 Feb. 2014</span>
+            </li> 
+      @*<li class="">
+        <span class="fa fa-envelope tag is-info"></span> 
+        <div class="timeline-item">
+          <span class="time"><i class="fa fa-clock-o"></i> 12:05</span> 
+          <h3 class="timeline-header">Chris</h3> 
+          <div class="timeline-body">
+            This is Chris
+          </div> 
+          <div class="timeline-footer"></div>
+        </div>
+      </li>   
+      <li class="">
+        <span class="fa fa-commenting-o tag is-primary"></span> 
+        <div class="timeline-item">
+          <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span> 
+          <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
+        </div>
+      </li>   
+      <li class="">
+        <span class="fa fa-comments tag is-danger"></span> 
+        <div class="timeline-item">
+          <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span> 
+          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3> 
+          <div class="timeline-body">
+            Take me to your leader!
+            Switzerland is small and neutral!
+            We are more like Germany, ambitious and misunderstood!
+          </div> 
+          <div class="timeline-footer">
+            <a class="button is-info is-small">View comment</a>
+          </div>
+        </div>
+      </li>   
+      <li class="time-label"><span class="tag is-primary">3 Jan. 2014</span></li>   
+      <li class="">
+        <span class="fa fa-camera  tag is-danger"></span> 
+        <div class="timeline-item">
+          <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span> 
+          <h3 class="timeline-header">
+            <a href="#">Mina Lee</a> uploaded new photos</h3> 
+            <div class="timeline-body">
+              <img src="http://placehold.it/150x100" alt="..." class="margin"> 
+              <img src="http://placehold.it/150x100" alt="..." class="margin"> 
+              <img src="http://placehold.it/150x100" alt="..." class="margin"> 
+              <img src="http://placehold.it/150x100" alt="..." class="margin">
+            </div>
+          </div>
+        </li>*@
+
+        <li class=""><span class="fa fa-clock-o tag is-white"></span></li>
+        </ul>
     </div>
 </div>
 

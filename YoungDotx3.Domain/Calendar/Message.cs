@@ -29,7 +29,7 @@ namespace YoungDotx3.Domain.Calendar
         public string CreateDate { get; set; } = string.Empty;
         public string Color { get; set; } = string.Empty;
 
-        public string GetCreateMessageJson()
+        public string GetCreateMessageJson(string ip)
         {
             StringWriter sw = new StringWriter();
             JsonTextWriter jsonText = new JsonTextWriter(sw);
@@ -42,6 +42,10 @@ namespace YoungDotx3.Domain.Calendar
             jsonText.WriteValue(Color);
             jsonText.WritePropertyName("createdate");
             jsonText.WriteValue(CreateDate);
+            jsonText.WritePropertyName("ip");
+            jsonText.WriteValue(ip);
+            jsonText.WritePropertyName("isdelete");
+            jsonText.WriteValue(false);
             jsonText.WriteEndObject();
 
             return sw.ToString(); ;

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="HappyBirthdayService.cs" />
     <Compile Include="MessageWallService.cs" />
+    <Compile Include="NetWorkService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebRequstService.cs" />
   </ItemGroup>

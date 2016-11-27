@@ -81,7 +81,8 @@ namespace YoungDotx3.Service
             {
                 bool result = false;
                 string url = _elasticSearchPath + "happybirthdaymessage";
-                string json = message.GetCreateMessageJson();
+                string ip = NetWorkService.GetIpAddress();
+                string json = message.GetCreateMessageJson(ip);
                 HttpStatusCode errorCode;
 
                 WebRequstService webRequstService = new WebRequstService();

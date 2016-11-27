@@ -14,8 +14,14 @@
           "type": "date",
           "format": "yyyy-MM-dd"
         },
-          "color": {
+        "color": {
           "type": "string"
+        },
+          "ip": {
+          "type": "string"
+        },
+          "isdelete": {
+          "type": "boolean"
         }
       }
     }
