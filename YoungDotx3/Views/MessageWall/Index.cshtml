@@ -3,6 +3,8 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        var postCount = 0;
+
         function createMessage() {
             $.ajax({
                 type: "POST",
@@ -16,6 +18,7 @@
                 if (checkTimeout(result)) {
 
                     if (result.isSuccess) {
+                        postCount++;
                         $('#content').val('');
                         createMessageUI(result.messageModel);
                     } else {
@@ -32,7 +35,13 @@
         function createMessageUI(messageModel) {
             var html = '';
             html += '<li class="">';
-            html += '   <span class="fa fa-envelope tag is-info"></span>';
+            if (postCount % 3 === 0) {
+                html += '<span class="fa fa-envelope tag is-info"></span>';
+            } else if (postCount % 3 === 1) {
+                html += '<span class="fa fa-camera tag is-danger"></span>';
+            } else {
+                html += '<span class="fa fa-commenting-o  tag is-primary"></span>';
+            }
             html += '   <div class="timeline-item">';
             html += '       <span class="time"><i class="fa fa-clock-o"></i>' + messageModel.CreateTime + '</span>';
             html += '       <h3 class="timeline-header">' + messageModel.Nickname + '</h3>';
@@ -46,7 +55,7 @@
             html += '   </div>';
             html += '</li>';
 
-            $('#leave-message').after(html);
+            $('.' + messageModel.CreateDate).after(html);
         }
 
         function alertMessage(message, type) {
@@ -62,14 +71,6 @@
             $('#modal-alert').modal('show');
             setTimeout(function () { $('#modal-alert').modal('hide'); }, 3000);
         }
-
-        //$('#nickname, #content').on('focus', function () {
-        //    $('.panel-leave-message').css('background-color', '#e8f4fb');
-        //});
-
-        //$('#nickname, #content').on('blur', function () {
-        //    $('.panel-leave-message').css('background-color', '#ffffff');
-        //});
 
         $('#btn-cancel').on('click', function() {
             $('#nickname, #content').val('');
@@ -132,7 +133,7 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: #4a4a4a;
+        background: #D8CEF6;
         left: 31px;
         margin: 0;
         border-radius: 2px;
@@ -163,6 +164,11 @@
         text-align: center;
         left: 18px;
         top: 0;
+    }
+
+    .tag.is-now {
+        background-color: #ffc107;
+        color: #fff;
     }
 
     .tag.is-danger {
@@ -242,9 +248,9 @@
 
 <div class="main-body">
     <div class="center" id="center-content">
-        <ul class="timeline">
+        <ul id="timeline" class="timeline">
             <li class="time-label">
-                <span class="fa fa-hourglass-start tag is-danger"></span>
+                <span class="fa fa-hourglass-start tag is-now"></span>
             </li> 
             <li id="leave-message" class="">
                 @*<span class="fa fa-envelope tag is-info"></span>*@
@@ -269,7 +275,7 @@
                 {
                     if (date != aMessage.CreateDate)
                     {
-                        <li class="time-label">
+                        <li class="time-label @aMessage.CreateDate">
                             <span class="tag is-danger">@aMessage.CreateDate</span>
                         </li>
                         date = aMessage.CreateDate;
@@ -305,58 +311,6 @@
                     count ++;
                 }
             }
-            <li class="time-label">
-                <span class="tag is-danger">10 Feb. 2014</span>
-            </li> 
-      @*<li class="">
-        <span class="fa fa-envelope tag is-info"></span> 
-        <div class="timeline-item">
-          <span class="time"><i class="fa fa-clock-o"></i> 12:05</span> 
-          <h3 class="timeline-header">Chris</h3> 
-          <div class="timeline-body">
-            This is Chris
-          </div> 
-          <div class="timeline-footer"></div>
-        </div>
-      </li>   
-      <li class="">
-        <span class="fa fa-commenting-o tag is-primary"></span> 
-        <div class="timeline-item">
-          <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span> 
-          <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
-        </div>
-      </li>   
-      <li class="">
-        <span class="fa fa-comments tag is-danger"></span> 
-        <div class="timeline-item">
-          <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span> 
-          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3> 
-          <div class="timeline-body">
-            Take me to your leader!
-            Switzerland is small and neutral!
-            We are more like Germany, ambitious and misunderstood!
-          </div> 
-          <div class="timeline-footer">
-            <a class="button is-info is-small">View comment</a>
-          </div>
-        </div>
-      </li>   
-      <li class="time-label"><span class="tag is-primary">3 Jan. 2014</span></li>   
-      <li class="">
-        <span class="fa fa-camera  tag is-danger"></span> 
-        <div class="timeline-item">
-          <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span> 
-          <h3 class="timeline-header">
-            <a href="#">Mina Lee</a> uploaded new photos</h3> 
-            <div class="timeline-body">
-              <img src="http://placehold.it/150x100" alt="..." class="margin"> 
-              <img src="http://placehold.it/150x100" alt="..." class="margin"> 
-              <img src="http://placehold.it/150x100" alt="..." class="margin"> 
-              <img src="http://placehold.it/150x100" alt="..." class="margin">
-            </div>
-          </div>
-        </li>*@
-
         <li class=""><span class="fa fa-clock-o tag is-white"></span></li>
         </ul>
     </div>

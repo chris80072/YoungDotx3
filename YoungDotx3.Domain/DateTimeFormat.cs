@@ -9,7 +9,7 @@ namespace YoungDotx3.Domain
     public class DateTimeFormat
     {
         public static string Date = "yyyyMMdd";
-        public static string Time = "HH:mm:ss";
+        public static string Time = "HH:mm";
         public static string DateWithSlash = "yyyy/MM/dd";
         public static string DateWithHyphen = "yyyy-MM-dd";
         
