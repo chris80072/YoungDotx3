@@ -27,17 +27,24 @@ namespace YoungDotx3.Domain.MessageWall
         }
         public DateTime CreateDateTime { get; set; }
 
-        public static string GetMessagesJson(string order)
+        public static string GetMessagesJson(string from)
         {
             StringWriter sw = new StringWriter();
             JsonTextWriter jsonText = new JsonTextWriter(sw);
             jsonText.WriteStartObject();
+            jsonText.WritePropertyName("size");
+            jsonText.WriteValue(10);
+            if (!string.IsNullOrEmpty(from))
+            {
+                jsonText.WritePropertyName("from");
+                jsonText.WriteValue(from);
+            }
             jsonText.WritePropertyName("sort");
             jsonText.WriteStartObject();
             jsonText.WritePropertyName("createdatetime");
             jsonText.WriteStartObject();
             jsonText.WritePropertyName("order");
-            jsonText.WriteValue(order);
+            jsonText.WriteValue("desc");
             jsonText.WriteEndObject();
             jsonText.WriteEndObject();
             jsonText.WriteEndObject();

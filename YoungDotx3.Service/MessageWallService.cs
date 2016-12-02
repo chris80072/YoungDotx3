@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YoungDotx3.Domain;
+using YoungDotx3.Domain.MessageWall;
 
 namespace YoungDotx3.Service
 {
@@ -23,14 +24,15 @@ namespace YoungDotx3.Service
 
         private readonly string _elasticSearchPath;
 
-        public List<Domain.MessageWall.Message> GetMessages(string order)
+        public QueryMessages GetMessages()
         {
             string response = string.Empty;
-            List<Domain.MessageWall.Message> result = new List<Domain.MessageWall.Message>();
+            //List<Domain.MessageWall.Message> result = new List<Domain.MessageWall.Message>();
+            QueryMessages result = new QueryMessages();
 
             try
             {
-                string json = Domain.MessageWall.Message.GetMessagesJson(order);
+                string json = Domain.MessageWall.Message.GetMessagesJson("");
 
                 string url = _elasticSearchPath + "messagewall/_search";
                 HttpStatusCode errorCode;
@@ -48,7 +50,7 @@ namespace YoungDotx3.Service
                     {
                         JObject aMessageJson = aHit as JObject;
                         Domain.MessageWall.Message message = JsonConvert.DeserializeObject<Domain.MessageWall.Message>(aMessageJson.GetValue("_source").ToString());
-                        result.Add(message);
+                        result.Messages.Add(message);
                     }
                 }
 
@@ -57,7 +59,7 @@ namespace YoungDotx3.Service
             catch (Exception e)
             {
                 log.Error($"Response = {response}", e);
-                return new List<Domain.MessageWall.Message>();
+                return new QueryMessages();
             }
         }
 

@@ -7,7 +7,7 @@
         var postCount = 0;
         var messageCount = 0;
         var date = '';
-        getMessages('asc');
+        getMessages();
 
         $(window).scroll(function () {
             //最後一頁scrollTop=body-window，300是預留空間
@@ -18,11 +18,11 @@
             }
         });
 
-        function getMessages(sortBy) {
+        function getMessages() {
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("GetMessages", "MessageWall")",
-                data: { "sortBy": sortBy },
+                data: { "from": from },
             dataType: "json",
             headers: {
                 'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
@@ -31,7 +31,7 @@
                 if (checkTimeout(result)) {
                     var models = result.messageModels;
                     for (var i = 0; i < models.length > 0; i++) {
-                        createMessageUI(models[i]);
+                        $('#initial').before(bindMessageHtml(models[i]));
                         messageCount++;
                     }
                 }
@@ -57,7 +57,12 @@
                     if (result.isSuccess) {
                         postCount++;
                         $('#content').val('');
-                        createMessageUI(result.messageModel);
+                        var model = result.messageModel;
+                        if ($('.' + model.CreateDate).length > 0) {
+                            $('.' + model.CreateDate).after(bindMessageHtml(model));
+                        } else {
+                            $('#leave-message').after(bindMessageHtml(model));
+                        }
                     } else {
                         alertMessage('新增失敗，請稍後再試！', 'danger');
                     }
@@ -69,7 +74,7 @@
             });
         }
 
-        function createMessageUI(messageModel) {
+        function bindMessageHtml(messageModel) {
             var html = '';
             if (date != messageModel.CreateDate)
             {
@@ -79,24 +84,19 @@
                 date = messageModel.CreateDate;
             }
 
-            html += '<li class="">';
+            html += '<li class="message">';
             html += getIconHtml();
             html += '   <div class="timeline-item">';
             html += '       <span class="time"><i class="fa fa-clock-o"></i>' + messageModel.CreateTime + '</span>';
             html += '       <h3 class="timeline-header">' + messageModel.Nickname + '</h3>';
             html += '       <div class="timeline-body">';
-            html += getMessage(messageModel.Content);
+            html += getMessageHtml(messageModel.Content);
             html += '       </div>';
             html += '       <div class="timeline-footer"></div>';
             html += '   </div>';
             html += '</li>';
 
-            if ($('.' + messageModel.CreateDate).length > 0) {
-                $('.' + messageModel.CreateDate).after(html);
-            } else {
-                $('#leave-message').after(html);
-            }
-            
+            return html;
         }
 
         function getIconHtml() {
@@ -109,7 +109,7 @@
             }
         }
 
-        function getMessage(content) {
+        function getMessageHtml(content) {
             var result = '';
             var lines = content.split('\n');
             for (var i = 0; i < lines.length; i++) {
@@ -327,7 +327,7 @@
                     </div>
                 </div>
             </li>   
-        <li class=""><span class="fa fa-clock-o tag is-white"></span></li>
+        <li id="initial"><span class="fa fa-clock-o tag is-white"></span></li>
         </ul>
     </div>
 </div>

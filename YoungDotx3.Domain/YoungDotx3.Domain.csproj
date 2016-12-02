@@ -48,6 +48,7 @@
     <Compile Include="Calendar\Month.cs" />
     <Compile Include="DateTimeFormat.cs" />
     <Compile Include="MessageWall\Message.cs" />
+    <Compile Include="MessageWall\QueryMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebRequestMethod.cs" />
   </ItemGroup>
