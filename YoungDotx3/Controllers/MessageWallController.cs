@@ -15,11 +15,25 @@ namespace YoungDotx3.Controllers
         // GET: MessageWall
         public ActionResult Index()
         {
+            //Service.MessageWallService service = new Service.MessageWallService();
+            //var messages = service.GetMessages();
+            //List<MessageModels> messageModelses = new List<MessageModels>();
+            //messageModelses.AddRange(messages.Select(val => new MessageModels(val)));
+            //return View(messageModelses);
+            return View();
+        }
+
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
+        [AjaxValidateAntiForgeryToken]
+        public ActionResult GetMessages(string sortBy)
+        {
             Service.MessageWallService service = new Service.MessageWallService();
-            var messages = service.GetMessages();
+            var messages = service.GetMessages(sortBy);
             List<MessageModels> messageModelses = new List<MessageModels>();
             messageModelses.AddRange(messages.Select(val => new MessageModels(val)));
-            return View(messageModelses);
+
+            return Content(JsonConvert.SerializeObject(new { messageModels = messageModelses }), "application/json");
         }
 
         [HttpPost]

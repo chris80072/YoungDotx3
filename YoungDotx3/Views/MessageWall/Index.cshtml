@@ -3,7 +3,44 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
         var postCount = 0;
+        var messageCount = 0;
+        var date = '';
+        getMessages('asc');
+
+        $(window).scroll(function () {
+            //最後一頁scrollTop=body-window，300是預留空間
+            var last = $("body").height() - $(window).height() - 300;
+            if ($(window).scrollTop() >= last) {
+                //$(".down").hide();
+                //alert(123);
+            }
+        });
+
+        function getMessages(sortBy) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetMessages", "MessageWall")",
+                data: { "sortBy": sortBy },
+            dataType: "json",
+            headers: {
+                'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
+            },
+            success: function(result) {
+                if (checkTimeout(result)) {
+                    var models = result.messageModels;
+                    for (var i = 0; i < models.length > 0; i++) {
+                        createMessageUI(models[i]);
+                        messageCount++;
+                    }
+                }
+            },
+            error: function(result) {
+                alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
+            }
+        });
+        }
 
         function createMessage() {
             $.ajax({
@@ -34,28 +71,51 @@
 
         function createMessageUI(messageModel) {
             var html = '';
-            html += '<li class="">';
-            if (postCount % 3 === 0) {
-                html += '<span class="fa fa-envelope tag is-info"></span>';
-            } else if (postCount % 3 === 1) {
-                html += '<span class="fa fa-camera tag is-danger"></span>';
-            } else {
-                html += '<span class="fa fa-commenting-o  tag is-primary"></span>';
+            if (date != messageModel.CreateDate)
+            {
+                html += '   <li class="time-label ' + messageModel.CreateDate + '">';
+                html += '       <span class="tag is-danger">' + messageModel.CreateDate + '</span>';
+                html += '   </li>';
+                date = messageModel.CreateDate;
             }
+
+            html += '<li class="">';
+            html += getIconHtml();
             html += '   <div class="timeline-item">';
             html += '       <span class="time"><i class="fa fa-clock-o"></i>' + messageModel.CreateTime + '</span>';
             html += '       <h3 class="timeline-header">' + messageModel.Nickname + '</h3>';
             html += '       <div class="timeline-body">';
-            var lines = messageModel.Content.split('\n');
-            for (var i = 0; i < lines.length; i++) {
-                html += '       <p>' + lines[i] + '</p>';
-            }
+            html += getMessage(messageModel.Content);
             html += '       </div>';
             html += '       <div class="timeline-footer"></div>';
             html += '   </div>';
             html += '</li>';
 
-            $('.' + messageModel.CreateDate).after(html);
+            if ($('.' + messageModel.CreateDate).length > 0) {
+                $('.' + messageModel.CreateDate).after(html);
+            } else {
+                $('#leave-message').after(html);
+            }
+            
+        }
+
+        function getIconHtml() {
+            if (messageCount % 3 === 0) {
+                return '<span class="fa fa-envelope tag is-info"></span>';
+            } else if (messageCount % 3 === 1) {
+                return '<span class="fa fa-camera tag is-danger"></span>';
+            } else {
+                return '<span class="fa fa-commenting-o  tag is-primary"></span>';
+            }
+        }
+
+        function getMessage(content) {
+            var result = '';
+            var lines = content.split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                result += '       <p>' + lines[i] + '</p>';
+            }
+            return result;
         }
 
         function alertMessage(message, type) {
@@ -267,50 +327,6 @@
                     </div>
                 </div>
             </li>   
-            @{
-                var messages = Model;
-                var date = "";
-                var count = 0;
-                foreach (var aMessage in messages)
-                {
-                    if (date != aMessage.CreateDate)
-                    {
-                        <li class="time-label @aMessage.CreateDate">
-                            <span class="tag is-danger">@aMessage.CreateDate</span>
-                        </li>
-                        date = aMessage.CreateDate;
-                    }
-
-                    <li class="">
-                        @if (count%3 == 0)
-                        {
-                            <span class="fa fa-envelope tag is-info"></span>
-                        }
-                        else if (count%3 == 1)
-                        {
-                            <span class="fa fa-commenting-o tag is-primary"></span>
-                        }
-                        else
-                        {
-                            <span class="fa fa-camera  tag is-danger"></span>
-                        }
-
-                        <div class="timeline-item">
-                            <span class="time"><i class="fa fa-clock-o"></i> @aMessage.CreateTime</span>
-                            <h3 class="timeline-header">@aMessage.Nickname</h3>
-                            <div class="timeline-body">
-                                @foreach (var line in aMessage.Content.Split(new[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries))
-                                {
-                                    <p>@line</p>
-                                }
-                            </div>
-                            <div class="timeline-footer"></div>
-                        </div>
-                    </li>
-
-                    count ++;
-                }
-            }
         <li class=""><span class="fa fa-clock-o tag is-white"></span></li>
         </ul>
     </div>

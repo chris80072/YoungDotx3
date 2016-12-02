@@ -23,14 +23,14 @@ namespace YoungDotx3.Service
 
         private readonly string _elasticSearchPath;
 
-        public List<Domain.MessageWall.Message> GetMessages()
+        public List<Domain.MessageWall.Message> GetMessages(string order)
         {
             string response = string.Empty;
             List<Domain.MessageWall.Message> result = new List<Domain.MessageWall.Message>();
 
             try
             {
-                string json = "{\"sort\": { \"createdatetime\": { \"order\": \"desc\" } }}";
+                string json = Domain.MessageWall.Message.GetMessagesJson(order);
 
                 string url = _elasticSearchPath + "messagewall/_search";
                 HttpStatusCode errorCode;
@@ -70,7 +70,7 @@ namespace YoungDotx3.Service
                 bool result = false;
                 string url = _elasticSearchPath + "messagewall";
                 string ip = NetWorkService.GetIpAddress();
-                string json = message.GetCreateMessageJson(ip);
+                string json = message.CreateMessageJson(ip);
                 HttpStatusCode errorCode;
 
                 WebRequstService webRequstService = new WebRequstService();
