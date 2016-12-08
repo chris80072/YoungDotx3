@@ -26,10 +26,10 @@ namespace YoungDotx3.Controllers
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
         [AjaxValidateAntiForgeryToken]
-        public ActionResult GetMessages()
+        public ActionResult GetMessages(int page)
         {
             Service.MessageWallService service = new Service.MessageWallService();
-            var messages = service.GetMessages();
+            var messages = service.GetMessages(page);
             List<MessageModels> messageModelses = new List<MessageModels>();
             messageModelses.AddRange(messages.Messages.Select(val => new MessageModels(val)));
 

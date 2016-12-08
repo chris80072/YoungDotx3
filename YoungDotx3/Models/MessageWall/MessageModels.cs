@@ -21,5 +21,6 @@ namespace YoungDotx3.Models.MessageWall
         public string Content { get; set; }
         public string CreateDate { get; set; }
         public string CreateTime { get; set; }
+        public int Sequence { get; set; }
     }
 }

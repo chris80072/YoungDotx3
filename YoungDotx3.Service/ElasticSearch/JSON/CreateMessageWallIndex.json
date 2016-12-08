@@ -2,6 +2,9 @@
 
 {
   "properties": {
+    "id": {
+      "type": "long"
+    },
     "nickname": {
       "type": "string"
     },
@@ -9,13 +12,13 @@
       "type": "string"
     },
     "createdatetime": {
-      "type":   "date",
+      "type": "date",
       "format": "yyyy-MM-dd HH:mm:ss"
     },
-      "ip": {
+    "ip": {
       "type": "string"
     },
-      "isdelete": {
+    "isdelete": {
       "type": "boolean"
     }
   }

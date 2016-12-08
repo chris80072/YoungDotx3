@@ -24,15 +24,14 @@ namespace YoungDotx3.Service
 
         private readonly string _elasticSearchPath;
 
-        public QueryMessages GetMessages()
+        public QueryMessages GetMessages(int page)
         {
             string response = string.Empty;
-            //List<Domain.MessageWall.Message> result = new List<Domain.MessageWall.Message>();
             QueryMessages result = new QueryMessages();
 
             try
             {
-                string json = Domain.MessageWall.Message.GetMessagesJson("");
+                string json = Domain.MessageWall.Message.GetMessagesJson(page);
 
                 string url = _elasticSearchPath + "messagewall/_search";
                 HttpStatusCode errorCode;
@@ -42,14 +41,24 @@ namespace YoungDotx3.Service
 
                 JObject searchJson = JObject.Parse(response);
                 JObject property = searchJson["hits"] as JObject;
-                //result.Total = Int32.Parse(property.GetValue("total").ToString());
+
                 if (property != null)
                 {
                     JArray hits = property.GetValue("hits") as JArray;
+                    result.Total = property.GetValue("total").ToString();
+                    
                     foreach (var aHit in hits)
                     {
-                        JObject aMessageJson = aHit as JObject;
-                        Domain.MessageWall.Message message = JsonConvert.DeserializeObject<Domain.MessageWall.Message>(aMessageJson.GetValue("_source").ToString());
+                        JObject hit = aHit as JObject;
+                        JObject source = hit.GetValue("_source") as JObject;
+                        
+                        Message message = new Message
+                        {
+                            Id = source.GetValue("id").ToString(),
+                            Nickname = source.GetValue("nickname").ToString(),
+                            Content = source.GetValue("content").ToString(),
+                            CreateDateTime = Convert.ToDateTime(source.GetValue("createdatetime")),
+                        };
                         result.Messages.Add(message);
                     }
                 }
@@ -59,7 +68,7 @@ namespace YoungDotx3.Service
             catch (Exception e)
             {
                 log.Error($"Response = {response}", e);
-                return new QueryMessages();
+                return result;
             }
         }
 
@@ -72,7 +81,8 @@ namespace YoungDotx3.Service
                 bool result = false;
                 string url = _elasticSearchPath + "messagewall";
                 string ip = NetWorkService.GetIpAddress();
-                string json = message.CreateMessageJson(ip);
+                long total = GetTotalCount();
+                string json = message.CreateMessageJson(total, ip);
                 HttpStatusCode errorCode;
 
                 WebRequstService webRequstService = new WebRequstService();
@@ -86,6 +96,35 @@ namespace YoungDotx3.Service
             {
                 log.Error($"Response = {response}", e);
                 throw;
+            }
+        }
+
+        private long GetTotalCount()
+        {
+            string response = string.Empty;
+
+            try
+            {
+                string json = Domain.MessageWall.Message.GetMessagesJson(1);
+
+                string url = _elasticSearchPath + "messagewall/_search";
+                HttpStatusCode errorCode;
+
+                WebRequstService webRequstService = new WebRequstService();
+                response = webRequstService.Post(url, json, out errorCode);
+
+                JObject searchJson = JObject.Parse(response);
+                JObject property = searchJson["hits"] as JObject;
+
+                if (property != null)
+                    return Convert.ToInt64(property.GetValue("total"));
+
+                return 0;
+            }
+            catch (Exception e)
+            {
+                log.Error($"Response = {response}", e);
+                return 0;
             }
         }
     }

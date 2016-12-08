@@ -27,18 +27,17 @@ namespace YoungDotx3.Domain.MessageWall
         }
         public DateTime CreateDateTime { get; set; }
 
-        public static string GetMessagesJson(string from)
+        public static string GetMessagesJson(int page)
         {
+            int size = 10;
+            int from = (page - 1)*10;
             StringWriter sw = new StringWriter();
             JsonTextWriter jsonText = new JsonTextWriter(sw);
             jsonText.WriteStartObject();
             jsonText.WritePropertyName("size");
-            jsonText.WriteValue(10);
-            if (!string.IsNullOrEmpty(from))
-            {
-                jsonText.WritePropertyName("from");
-                jsonText.WriteValue(from);
-            }
+            jsonText.WriteValue(size);
+            jsonText.WritePropertyName("from");
+            jsonText.WriteValue(from);
             jsonText.WritePropertyName("sort");
             jsonText.WriteStartObject();
             jsonText.WritePropertyName("createdatetime");
@@ -52,11 +51,13 @@ namespace YoungDotx3.Domain.MessageWall
             return sw.ToString(); ;
         }
 
-        public string CreateMessageJson(string ip)
+        public string CreateMessageJson(long total, string ip)
         {
             StringWriter sw = new StringWriter();
             JsonTextWriter jsonText = new JsonTextWriter(sw);
             jsonText.WriteStartObject();
+            jsonText.WritePropertyName("id");
+            jsonText.WriteValue(total + 1);
             jsonText.WritePropertyName("nickname");
             jsonText.WriteValue(Nickname);
             jsonText.WritePropertyName("content");

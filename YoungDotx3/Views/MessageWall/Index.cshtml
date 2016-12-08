@@ -4,17 +4,20 @@
 
     $(document).ready(function () {
 
-        var postCount = 0;
-        var messageCount = 0;
         var date = '';
+        var lastId = 0;
+        var page = 1;
+        var isQuerying = false;
         getMessages();
 
         $(window).scroll(function () {
-            //最後一頁scrollTop=body-window，300是預留空間
-            var last = $("body").height() - $(window).height() - 300;
-            if ($(window).scrollTop() >= last) {
-                //$(".down").hide();
-                //alert(123);
+            if (!isQuerying && lastId > 1) {
+                //最後一頁scrollTop=body-window，300是預留空間
+                var last = $("body").height() - $(window).height() - 300;
+                if ($(window).scrollTop() >= last) {
+                    getMessages();
+                    isQuerying = true;
+                }
             }
         });
 
@@ -22,24 +25,27 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("GetMessages", "MessageWall")",
-                data: { "from": from },
-            dataType: "json",
-            headers: {
-                'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
-            },
-            success: function(result) {
-                if (checkTimeout(result)) {
-                    var models = result.messageModels;
-                    for (var i = 0; i < models.length > 0; i++) {
-                        $('#initial').before(bindMessageHtml(models[i]));
-                        messageCount++;
+                data: { "page": page },
+                dataType: "json",
+                headers: {
+                    'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
+                },
+                success: function(result) {
+                    if (checkTimeout(result)) {
+                        page++;
+                        var models = result.messageModels;
+                        for (var i = 0; i < models.length > 0; i++) {
+                            $('#initial').before(bindMessageHtml(models[i]));
+                        }
                     }
+                },
+                error: function(result) {
+                    alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
+                },
+                complete: function () {
+                    isQuerying = false;
                 }
-            },
-            error: function(result) {
-                alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
-            }
-        });
+            });
         }
 
         function createMessage() {
@@ -47,34 +53,34 @@
                 type: "POST",
                 url: "@Url.Action("Create", "MessageWall")",
                 data: { "nickname": $('#nickname').val(), "content": $('#content').val() },
-            dataType: "json",
-            headers: {
-                'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
-            },
-            success: function(result) {
-                if (checkTimeout(result)) {
+                dataType: "json",
+                headers: {
+                    'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
+                },
+                success: function(result) {
+                    if (checkTimeout(result)) {
 
-                    if (result.isSuccess) {
-                        postCount++;
-                        $('#content').val('');
-                        var model = result.messageModel;
-                        if ($('.' + model.CreateDate).length > 0) {
-                            $('.' + model.CreateDate).after(bindMessageHtml(model));
+                        if (result.isSuccess) {
+                            $('#content').val('');
+                            var model = result.messageModel;
+                            if ($('.' + model.CreateDate).length > 0) {
+                                $('.' + model.CreateDate).after(bindMessageHtml(model));
+                            } else {
+                                $('#leave-message').after(bindMessageHtml(model));
+                            }
                         } else {
-                            $('#leave-message').after(bindMessageHtml(model));
+                            alertMessage('新增失敗，請稍後再試！', 'danger');
                         }
-                    } else {
-                        alertMessage('新增失敗，請稍後再試！', 'danger');
                     }
-                }
-            },
-            error: function(result) {
-                    alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
+                },
+                error: function(result) {
+                        alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
                 }
             });
         }
 
         function bindMessageHtml(messageModel) {
+            lastId = messageModel.Id;
             var html = '';
             if (date != messageModel.CreateDate)
             {
@@ -85,7 +91,7 @@
             }
 
             html += '<li class="message">';
-            html += getIconHtml();
+            html += getIconHtml(messageModel.Id);
             html += '   <div class="timeline-item">';
             html += '       <span class="time"><i class="fa fa-clock-o"></i>' + messageModel.CreateTime + '</span>';
             html += '       <h3 class="timeline-header">' + messageModel.Nickname + '</h3>';
@@ -99,10 +105,10 @@
             return html;
         }
 
-        function getIconHtml() {
-            if (messageCount % 3 === 0) {
+        function getIconHtml(seq) {
+            if (seq % 3 === 0) {
                 return '<span class="fa fa-envelope tag is-info"></span>';
-            } else if (messageCount % 3 === 1) {
+            } else if (seq % 3 === 1) {
                 return '<span class="fa fa-camera tag is-danger"></span>';
             } else {
                 return '<span class="fa fa-commenting-o  tag is-primary"></span>';
