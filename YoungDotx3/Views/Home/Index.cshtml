@@ -2,6 +2,49 @@
     ViewBag.Title = "首頁";
 }
 
-<div class="row">
-    <img src="https://i.ytimg.com/vi/74jd-QNcNsk/hqdefault.jpg" alt="青春點點點" />
-</div>
+@*<div class="row">
+        <img src="https://i.ytimg.com/vi/74jd-QNcNsk/hqdefault.jpg" alt="青春點點點" />
+    </div>*@
+
+<style type="text/css">
+    body {
+        background-color: #fff;
+    }
+
+    .bgimg-1, .block-2, .block-3 {
+        
+    }
+
+    .block-1 {
+        /* The image used */
+        background-image: url("https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/10352189_712835155442829_7554597432676692854_n.jpg?oh=fe9e369020ee00de12874ba52345d23c&oe=58B6B3F0");
+
+        /* Set a specific height */
+        min-height: 1000px; 
+
+        /* Create the parallax scrolling effect */
+        margin: auto;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .block-2 {
+        background-image: url('../../Content/Image/upup_welcome.jpg');
+
+        background-color:#77CFF0;
+        height: 500px; 
+
+        margin: auto;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .block-3 {
+        height: 1000px;
+        background-color:red;
+    }
+</style>
+<div class="block-1"></div>
+<div class="block-2"></div>
+<div class="block-3"></div>

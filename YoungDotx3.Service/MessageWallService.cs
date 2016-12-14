@@ -82,7 +82,8 @@ namespace YoungDotx3.Service
                 string url = _elasticSearchPath + "messagewall";
                 string ip = NetWorkService.GetIpAddress();
                 long total = GetTotalCount();
-                string json = message.CreateMessageJson(total, ip);
+                message.Id = (total + 1).ToString();
+                string json = message.CreateMessageJson(message.Id, ip);
                 HttpStatusCode errorCode;
 
                 WebRequstService webRequstService = new WebRequstService();

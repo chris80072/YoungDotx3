@@ -51,13 +51,13 @@ namespace YoungDotx3.Domain.MessageWall
             return sw.ToString(); ;
         }
 
-        public string CreateMessageJson(long total, string ip)
+        public string CreateMessageJson(string id, string ip)
         {
             StringWriter sw = new StringWriter();
             JsonTextWriter jsonText = new JsonTextWriter(sw);
             jsonText.WriteStartObject();
             jsonText.WritePropertyName("id");
-            jsonText.WriteValue(total + 1);
+            jsonText.WriteValue(id);
             jsonText.WritePropertyName("nickname");
             jsonText.WriteValue(Nickname);
             jsonText.WritePropertyName("content");
