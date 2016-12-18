@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }*/
+
+body, html, main {
+    /* important */
+    /*height: 100%;*/
+    background-color: #fff;
+}

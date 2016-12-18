@@ -1,5 +1,9 @@
 ﻿@model List<YoungDotx3.Models.MessageWall.MessageModels>
 
+@{
+    ViewBag.Title = "留言牆";
+}
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -37,9 +41,11 @@
                         for (var i = 0; i < models.length > 0; i++) {
                             $('#initial').before(bindMessageHtml(models[i]));
                         }
+                    } else {
+                        alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
                     }
                 },
-                error: function(result) {
+                error: function() {
                     alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
                 },
                 complete: function () {
@@ -106,12 +112,13 @@
         }
 
         function getIconHtml(seq) {
-            if (seq % 3 === 0) {
+            var base = 3;
+            if (seq % base === 0) {
                 return '<span class="fa fa-envelope tag is-info"></span>';
-            } else if (seq % 3 === 1) {
-                return '<span class="fa fa-camera tag is-danger"></span>';
+            } else if (seq % base === 1) {
+                return '<span class="fa fa-commenting-o tag is-danger"></span>';
             } else {
-                return '<span class="fa fa-commenting-o  tag is-primary"></span>';
+                return '<span class="fa fa-comments-o  tag is-primary"></span>';
             }
         }
 
@@ -157,18 +164,12 @@
 </script>
 
 <style>
+    html, body {
+        background-color: #e9ebee;
+    }
+
     h3 {
         font-weight: bold;
-    }
-
-    .main-body {
-        margin: 50px auto;
-        padding: 20px;
-    }
-
-    .center {
-        margin: 0 auto;
-        min-height: 100px;
     }
 
     .panel-content {
@@ -276,8 +277,6 @@
         padding-right: 10px;
     }
 
-
-
     .timeline>li>.timeline-item {
         box-shadow: 0 1px 1px rgba(0,0,0,.1);
         border-radius: 3px;
@@ -297,7 +296,6 @@
         font-size: 12px;
     }
 
-    
     .timeline>li>.timeline-item>.timeline-body, .timeline>li>.timeline-item>.timeline-footer {
         padding: 12px;
     }
@@ -312,30 +310,28 @@
     }
 </style>
 
-<div class="main-body">
-    <div class="center" id="center-content">
-        <ul id="timeline" class="timeline">
-            <li class="time-label">
-                <span class="fa fa-hourglass-start tag is-now"></span>
-            </li> 
-            <li id="leave-message" class="">
-                @*<span class="fa fa-envelope tag is-info"></span>*@
-                <div class="timeline-item">
-                    <div id="app" class="timeline-header">
-                        <input id="nickname" class="form-control text-nickname" type="text" placeholder="暱稱..  (限20字)" maxlength="20"/>
-                    </div>
-                    <div class="timeline-body">
-                        <textarea id="content" class="form-control textarea-content" placeholder="留言..  (限500字)" maxlength="500" rows="3"></textarea>
-                    </div> 
-                    <div class="timeline-footer">
-                        <button type="button" id="btn-send" class="btn btn-default btn-primary btn-send">送出</button>
-                        <button type="button" id="btn-cancel" class="btn btn-default btn-cancel">取消</button>
-                    </div>
+<div class="container">
+    <ul id="timeline" class="timeline">
+        <li class="time-label">
+            <span class="fa fa-hourglass-start tag is-now"></span>
+        </li> 
+        <li id="leave-message" class="">
+            @*<span class="fa fa-envelope tag is-info"></span>*@
+            <div class="timeline-item">
+                <div id="app" class="timeline-header">
+                    <input id="nickname" class="form-control text-nickname" type="text" placeholder="暱稱..  (限20字)" maxlength="20"/>
                 </div>
-            </li>   
-        <li id="initial"><span class="fa fa-clock-o tag is-white"></span></li>
-        </ul>
-    </div>
+                <div class="timeline-body">
+                    <textarea id="content" class="form-control textarea-content" placeholder="留言..  (限500字)" maxlength="500" rows="3"></textarea>
+                </div> 
+                <div class="timeline-footer">
+                    <button type="button" id="btn-send" class="btn btn-default btn-primary btn-send">送出</button>
+                    <button type="button" id="btn-cancel" class="btn btn-default btn-cancel">取消</button>
+                </div>
+            </div>
+        </li>   
+    <li id="initial"><span class="fa fa-clock-o tag is-white"></span></li>
+    </ul>
 </div>
 
 <div id="modal-alert" class="modal fade">

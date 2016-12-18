@@ -12,8 +12,8 @@
     @Scripts.Render("~/bundles/base")
     <link href="~/Scripts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <style>
-        body {
-            background-color: #e9ebee;
+        .copyright {
+            text-align: center;
         }
     </style>
 </head>
@@ -41,11 +41,11 @@
         </div>
     </div>
     @*<div class="container body-content">*@
-    <div class="" style="margin-top: 3%;">
+    <div style="margin-top: 3%;">
         @RenderBody()
         <hr />
         <footer>
-            <p>Copyright &copy; @DateTime.Now.Year Chris80072 All rights reserved</p>
+            <p  class="copyright">Copyright &copy; @DateTime.Now.Year Chris80072 All rights reserved</p>
         </footer>
     </div>
 
