@@ -90,7 +90,7 @@
                 success: function(result) {
                     if (checkTimeout(result)) {
                         if (result.Result == true) {
-                            setTimeout(function () { location.reload(); }, 1000);
+                            setTimeout(function () { location.reload(); }, 500);
                         } else {
                             alertMessage('資料錯誤，請確認！', 'danger');
                         }
