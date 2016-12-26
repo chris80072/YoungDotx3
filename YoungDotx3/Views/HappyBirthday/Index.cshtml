@@ -31,6 +31,10 @@
             navLinks: false, // can click day/week names to navigate views
             editable: false,
             eventClick: function(calEvent, jsEvent, view) {
+                /*alert('Event: ' + calEvent.title);
+                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                alert('View: ' + view.name);*/
+                showMessageContent(calEvent);
             },
             dayClick: function(date, jsEvent, view) {
                 if(checkDate(date._d))
@@ -63,6 +67,12 @@
 
         function showMesseageModal(date) {
             $('#createDate').val(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate());
+            $('#nickname').val('');
+            $('#content').val('');
+            $('#nickname').prop('disabled', false);
+            $('#content').prop('disabled', false);
+            $('#select-color').prop('disabled', false);
+            $('#btn-send, #btn-cancel, .text-select-color').show();
             $('#modal-message').modal('show');
         }
 
@@ -126,6 +136,18 @@
 
             $('#modal-alert').modal('show');
             setTimeout(function () { $('#modal-alert').modal('hide'); }, 3000);
+        }
+
+        function showMessageContent(calEvent){
+            $('#nickname').val(calEvent.title);
+            $('#content').val(calEvent.content);
+            $('#select-color').css('background-color', calEvent.color);
+            $('#createDate').val(calEvent.start._i);
+            $('#nickname').prop('disabled', true);
+            $('#content').prop('disabled', true);
+            $('#select-color').prop('disabled', true);
+            $('#btn-send, #btn-cancel, .text-select-color').hide();
+            $('#modal-message').modal('show');
         }
     });
 
