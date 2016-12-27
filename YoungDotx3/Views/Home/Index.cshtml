@@ -3,33 +3,40 @@
 }
 
 <style type="text/css">
-    .cd-fixed-bg {
-        min-height: 100%;
-        margin: auto;
-        /*background-size: cover;*/
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-position: center center;
 
-        /* Set a specific height */
-        min-height: 1000px; 
+    /* Create a Parallax Effect */
+    .bgimg-1, .bgimg-2, .bgimg-3 {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0 auto;
     }
  
-    .cd-fixed-bg.cd-bg-1 {
+    .bgimg-1 {
         background-image: url('https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/10352189_712835155442829_7554597432676692854_n.jpg?oh=fe9e369020ee00de12874ba52345d23c&oe=58B6B3F0');
+        min-height: 100%;
     }
-    .cd-fixed-bg.cd-bg-2 {
+    .bgimg-2 {
         background-image: url('https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/1393531_578377998888546_213847137_n.png?oh=1793498a06f00fdd1d9cdf4ca9777fff&oe=58F8D521');
         background-color:#77CFF0;
         min-height: 500px; 
     }
-    .cd-fixed-bg.cd-bg-3 {
+    .bgimg-3 {
         background-image: url('https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11412289_894051077321235_8156494063008736027_n.jpg?oh=83aeb1b4146e489f129262d8a56ac967&oe=58F745E4');
+        min-height: 100%;
+    }
+
+    .w3-wide {letter-spacing: 10px;}
+    .w3-hover-opacity {cursor: pointer;}
+
+    /* Turn off parallax scrolling for tablets and phones */
+    @@media only screen and (max-device-width: 1024px) {
+        .bgimg-1, .bgimg-2, .bgimg-3 {
+            background-attachment: scroll;
+        }
     }
 </style>
 
-<main>
-    <div class="cd-fixed-bg cd-bg-1"></div>
-    <div class="cd-fixed-bg cd-bg-2"></div>
-    <div class="cd-fixed-bg cd-bg-3"></div>
-</main>
+<div class="bgimg-1 w3-display-container w3-opacity-min"></div>
+<div class="bgimg-2 w3-display-container w3-opacity-min"></div>
+<div class="bgimg-3 w3-display-container w3-opacity-min"></div>

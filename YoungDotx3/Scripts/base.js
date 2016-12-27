@@ -6,6 +6,6 @@
     }
 });
 
-function checkTimeout(obj) {
+function checkTimeout(data) {
     return true;
 }
