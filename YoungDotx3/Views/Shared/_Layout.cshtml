@@ -23,22 +23,27 @@
 <body>
     <!-- Navbar (sit on top) -->
     <div class="w3-top">
+
         <ul class="w3-navbar" id="myNavbar">
-            <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
-                <a class="w3-hover-black" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
-                    <i class="fa fa-bars"></i>
-                </a>
-            </li>
-            <li class="w3-left-align">@Html.ActionLink("青春點點點", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})</li>
-            <li class="w3-hide-small">@Html.ActionLink("生日快樂", "Index", "HappyBirthday", new {}, new {onclick = "toggleFunction();"})</li>
-            <li class="w3-hide-small">@Html.ActionLink("留言牆", "Index", "MessageWall", new {}, new {onclick = "toggleFunction();"})</li>
-            <li class="w3-hide-small"><a href="http://www.uforadio.com.tw/" target="_blank">飛碟電台</a></li>
-            <li class="w3-hide-small"><a href="http://hichannel.hinet.net/radio/index.do?id=232" target="_blank">線上收聽</a></li>
-            @*<li class="w3-hide-small w3-right">
-                            <a href="#" class="w3-hover-red">
-                                <i class="fa fa-search"></i>
-                            </a>
-                        </li>*@
+            <div class="container">
+                <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+                    <a class="w3-hover-black" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </li>
+                <li class="w3-left-align">@Html.ActionLink("首頁", "Index", "Home", new { area = "" }, new { @class = "" })</li>
+                <li class="w3-hide-small">@Html.ActionLink("生日快樂", "Index", "HappyBirthday", new { }, new { onclick = "toggleFunction();" })</li>
+                <li class="w3-hide-small">@Html.ActionLink("哈雷路亞", "Index", "MessageWall", new { }, new { onclick = "toggleFunction();" })</li>
+                <li class="w3-hide-small"><a href="https://www.facebook.com/YoungDotx3/?fref=ts" target="_blank">臉書粉絲團</a></li>
+                <li class="w3-hide-small"><a href="http://youngdotsagit.blogspot.tw/" target="_blank">錄音檔</a></li>
+                <li class="w3-hide-small"><a href="http://hichannel.hinet.net/radio/index.do?id=232" target="_blank">線上收聽</a></li>
+                @*<li class="w3-hide-small w3-right">
+            <a href="#" class="w3-hover-red">
+                <i class="fa fa-search"></i>
+            </a>
+        </li>*@
+            </div>
+            
         </ul>
 
         <!-- Navbar on small screens -->
