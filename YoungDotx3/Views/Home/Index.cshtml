@@ -3,40 +3,246 @@
 }
 
 <style type="text/css">
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
 
-    /* Create a Parallax Effect */
-    .bgimg-1, .bgimg-2, .bgimg-3 {
-        background-attachment: fixed;
+    body{
+        overflow:hidden;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    a {
+        -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+        -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+        -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+        transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+        color: inherit;
+        text-decoration: underline;
+    }
+
+    hr:before {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .body:before {
+        content: '';
+        position: fixed;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        background-image: url('Images/background.jpg');
         background-position: center;
-        background-repeat: no-repeat;
-        margin: 0 auto;
-    }
- 
-    .bgimg-1 {
-        background-image: url('https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/10352189_712835155442829_7554597432676692854_n.jpg?oh=fe9e369020ee00de12874ba52345d23c&oe=58B6B3F0');
-        min-height: 100%;
-    }
-    .bgimg-2 {
-        background-image: url('https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/1393531_578377998888546_213847137_n.png?oh=1793498a06f00fdd1d9cdf4ca9777fff&oe=58F8D521');
-        background-color:#77CFF0;
-        min-height: 500px; 
-    }
-    .bgimg-3 {
-        background-image: url('https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11412289_894051077321235_8156494063008736027_n.jpg?oh=83aeb1b4146e489f129262d8a56ac967&oe=58F745E4');
-        min-height: 100%;
+        background-repeat: repeat;
+        background-size: cover;
+        background-attachment: scroll;
+        -moz-pointer-events: none;
+        -webkit-pointer-events: none;
+        -ms-pointer-events: none;
+        -moz-transform: scale(1);
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
     }
 
-    .w3-wide {letter-spacing: 10px;}
-    .w3-hover-opacity {cursor: pointer;}
+    .wrapper{
+        min-height: 95vh;
+        position: relative;
+        z-index: 2;
+        padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+        display: flex;
+        display: -moz-flex;
+        display: -webkit-flex;
+        display: -ms-flex;
+        webkit-overflow-scrolling: touch;
+        -moz-flex-direction: column;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -moz-align-items: center;
+        -webkit-align-items: center;
+        -ms-align-items: center;
+        align-items: center;
+        -moz-justify-content: center;
+        -webkit-justify-content: center;
+        -ms-justify-content: center;
+        justify-content: center;
+    }
 
-    /* Turn off parallax scrolling for tablets and phones */
-    @@media only screen and (max-device-width: 1024px) {
-        .bgimg-1, .bgimg-2, .bgimg-3 {
-            background-attachment: scroll;
-        }
+    #main {
+        transform:rotateX(-50deg);
+    }
+
+    .main{
+        display: flex;
+        display: -moz-flex;
+        display: -webkit-flex;
+        display: -ms-flex;
+        position: relative;
+        max-width: 100%;
+        z-index: 1;
+        overflow: hidden;
+        text-align: center;
+        background-color: rgba(255,255,255,0.929);
+        border-radius: 0.375rem 0.375rem 0.375rem 0.375rem;
+        -moz-align-items: center;
+        -webkit-align-items: center;
+        -ms-align-items: center;
+        align-items: center;
+        -moz-justify-content: center;
+        -webkit-justify-content: center;
+        -ms-justify-content: center;
+        justify-content: center;
+        -moz-transition: opacity 1s ease 0s,-moz-transform 1s ease 0s;
+        -webkit-transition: opacity 1s ease 0s,-webkit-transform 1s ease 0s;
+        -ms-transition: opacity 1s ease 0s,-ms-transform 1s ease 0s;
+        transition: opacity 1s ease 0s,transform 1s ease 0s;
+        -moz-transform: perspective(1000px) rotateX(0deg);
+        -webkit-transform: perspective(1000px) rotateX(0deg);
+        -ms-transform: perspective(1000px) rotateX(0deg);
+        transform: perspective(1000px) rotateX(0deg);
+        -moz-transform-origin: 50% 50%;
+        -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+    }
+
+    .inner {
+        overflow-x: hidden;
+        width: 25rem;
+        max-width: 100%;
+        padding: 4.625rem 1.5rem;
+    }
+
+    .main > .inner > * {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    #image {
+        display: inline-block;
+        margin-top: 0 !important;
+        position: relative;
+        overflow: hidden;
+        max-width: 100%;
+        width: 10rem;
+        border-radius: 100%;
+    }
+
+    #text-title {
+        text-transform: uppercase;
+        color: #313F47;
+        font-family: 'Source Sans Pro';
+        letter-spacing: 0.4rem;
+        width: calc(100% + 0.4rem);
+        font-size: 2em;
+        line-height: 1.5;
+        font-weight: 300;
+    }
+
+    #divider:before {
+        width: 19%;
+        background-color: #C8CCCF;
+        height: 1px;
+    }
+
+    #divider {
+        height: 0.5rem;
+        line-height: 0.5rem;
+    }
+
+    #text-name {
+        text-transform: uppercase;
+        color: #313F47;
+        font-family: 'Source Sans Pro';
+        letter-spacing: 0.225rem;
+        width: calc(100% + 0.225rem);
+        font-size: 1.25em;
+        line-height: 1.875;
+        font-weight: 200;
+    }
+
+    #icons {
+        font-size: 1.5em;
+        width: calc(100% + 1rem);
+        margin-left: -0.5rem;
+        cursor: default;
+        padding: 0;
+        letter-spacing: 0;
+    }
+
+    #icons li {
+        margin: 0.5rem;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .icon-fb {
+        color: #C8CCCF;
+        border: solid 1px #C8CCCF;
+        border-radius: 100%;
+        width: 2.5em;
+        height: 2.5em;
+        line-height: 2.5em;
+        display: block;
     }
 </style>
 
-<div class="bgimg-1 w3-display-container w3-opacity-min"></div>
-<div class="bgimg-2 w3-display-container w3-opacity-min"></div>
-<div class="bgimg-3 w3-display-container w3-opacity-min"></div>
+<div class="body">
+    <div class="wrapper">
+        <div class="main" id="main">
+            <div class="inner">
+                <div id="image">
+                    <img src="~/Images/image01.jpg" alt="">
+                </div>
+                <h1 id="text-title">青春點點點</h1>
+                <hr id="divider">
+                <p id="text-name">歐馬克/吳瑪麗/吳仲強</p>
+                <ul id="icons">
+                    <li>
+                        <a class="icon icon-fb" href="https://www.facebook.com/OrMARC" target="_blank">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="icon icon-fb" href="https://www.facebook.com/maryinthetower/" target="_blank">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="icon icon-fb" href="https://www.facebook.com/hankwuwuwu/" target="_blank">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var start = -50;
+        function rotateX() {
+            setTimeout(function () {
+                if (start < 0) {
+                    $('#main').css({ transform: 'rotateX(' + start + 'deg)' });
+                    start++;
+                    rotateX();
+                }
+            }, 10);
+        }
+
+        rotateX();
+    });
+</script>
