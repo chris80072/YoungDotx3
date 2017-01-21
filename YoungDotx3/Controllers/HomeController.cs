@@ -13,6 +13,11 @@ namespace YoungDotx3.Controllers
             return View();
         }
 
+        public ActionResult Intro()
+        {
+            return View();
+        }
+
         //public ActionResult About()
         //{
         //    ViewBag.Message = "Your application description page.";

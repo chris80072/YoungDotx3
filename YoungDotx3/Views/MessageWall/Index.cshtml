@@ -1,167 +1,10 @@
-﻿@model List<YoungDotx3.Models.MessageWall.MessageModels>
+﻿@using System.IdentityModel.Tokens
+@model List<YoungDotx3.Models.MessageWall.MessageModels>
 
 @{
     ViewBag.Title = "留言牆";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-        var date = '';
-        var lastId = 0;
-        var page = 1;
-        var isQuerying = false;
-        getMessages();
-
-        $(window).scroll(function () {
-            if (!isQuerying && lastId > 1) {
-                //最後一頁scrollTop=body-window，300是預留空間
-                var last = $("body").height() - $(window).height() - 300;
-                if ($(window).scrollTop() >= last) {
-                    getMessages();
-                    isQuerying = true;
-                }
-            }
-        });
-
-        function getMessages() {
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("GetMessages", "MessageWall")",
-                data: { "page": page },
-                dataType: "json",
-                headers: {
-                    'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
-                },
-                success: function(result) {
-                    if (checkTimeout(result)) {
-                        page++;
-                        var models = result.messageModels;
-                        for (var i = 0; i < models.length > 0; i++) {
-                            $('#initial').before(bindMessageHtml(models[i]));
-                        }
-                    } else {
-                        alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
-                    }
-                },
-                error: function() {
-                    alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
-                },
-                complete: function () {
-                    isQuerying = false;
-                }
-            });
-        }
-
-        function createMessage() {
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("Create", "MessageWall")",
-                data: { "nickname": $('#nickname').val(), "content": $('#content').val() },
-                dataType: "json",
-                headers: {
-                    'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
-                },
-                success: function(result) {
-                    if (checkTimeout(result)) {
-
-                        if (result.isSuccess) {
-                            $('#content').val('');
-                            var model = result.messageModel;
-                            if ($('.' + model.CreateDate).length > 0) {
-                                $('.' + model.CreateDate).after(bindMessageHtml(model));
-                            } else {
-                                $('#leave-message').after(bindMessageHtml(model));
-                            }
-                        } else {
-                            alertMessage('新增失敗，請稍後再試！', 'danger');
-                        }
-                    }
-                },
-                error: function(result) {
-                        alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
-                }
-            });
-        }
-
-        function bindMessageHtml(messageModel) {
-            lastId = messageModel.Id;
-            var html = '';
-            if (date != messageModel.CreateDate)
-            {
-                html += '   <li class="time-label ' + messageModel.CreateDate + '">';
-                html += '       <span class="tag is-danger">' + messageModel.CreateDate + '</span>';
-                html += '   </li>';
-                date = messageModel.CreateDate;
-            }
-
-            html += '<li class="message">';
-            html += getIconHtml(messageModel.Id);
-            html += '   <div class="timeline-item">';
-            html += '       <span class="time"><i class="fa fa-clock-o"></i>' + messageModel.CreateTime + '</span>';
-            html += '       <h3 class="timeline-header">' + messageModel.Nickname + '</h3>';
-            html += '       <div class="timeline-body">';
-            html += getMessageHtml(messageModel.Content);
-            html += '       </div>';
-            html += '       <div class="timeline-footer"></div>';
-            html += '   </div>';
-            html += '</li>';
-
-            return html;
-        }
-
-        function getIconHtml(seq) {
-            var base = 3;
-            if (seq % base === 0) {
-                return '<span class="fa fa-envelope tag is-info"></span>';
-            } else if (seq % base === 1) {
-                return '<span class="fa fa-commenting-o tag is-danger"></span>';
-            } else {
-                return '<span class="fa fa-comments-o  tag is-primary"></span>';
-            }
-        }
-
-        function getMessageHtml(content) {
-            var result = '';
-            var lines = content.split('\n');
-            for (var i = 0; i < lines.length; i++) {
-                result += '       <p>' + lines[i] + '</p>';
-            }
-            return result;
-        }
-
-        function alertMessage(message, type) {
-            $('#alert-message').html(message);
-
-            if (type === 'success')
-                $('.modal-alert').css('background-color', '#dff0d8');
-            else if (type === 'danger')
-                $('.modal-alert').css('background-color', '#f2dede');
-            else
-                $('.modal-alert').css('background-color', '#ffffff');
-
-            $('#modal-alert').modal('show');
-            setTimeout(function () { $('#modal-alert').modal('hide'); }, 3000);
-        }
-
-        $('#btn-cancel').on('click', function() {
-            $('#nickname, #content').val('');
-        });
-
-        $('#btn-send').on('click', function () {
-            if ($('#nickname').val() === '') {
-                alertMessage('請輸入暱稱！', 'danger');
-                $('#nickname').trigger('focus');
-            } else if ($('#content').val() === '') {
-                alertMessage('請輸入內容！', 'danger');
-                $('#content').trigger('focus');
-            } else {
-                createMessage();
-            }
-        });
-    });
-</script>
 
 <style>
     html, body {
@@ -343,3 +186,165 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+@section scripts{
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var date = '';
+        var lastId = 0;
+        var page = 1;
+        var isQuerying = false;
+        getMessages();
+
+        $(window).scroll(function () {
+            if (!isQuerying && lastId > 1) {
+                //最後一頁scrollTop=body-window，300是預留空間
+                var last = $("body").height() - $(window).height() - 300;
+                if ($(window).scrollTop() >= last) {
+                    getMessages();
+                    isQuerying = true;
+                }
+            }
+        });
+
+        function getMessages() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetMessages", "MessageWall")",
+                data: { "page": page },
+                dataType: "json",
+                headers: {
+                    'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
+                },
+                success: function(result) {
+                    if (checkTimeout(result)) {
+                        page++;
+                        var models = result.messageModels;
+                        for (var i = 0; i < models.length > 0; i++) {
+                            $('#initial').before(bindMessageHtml(models[i]));
+                        }
+                    } else {
+                        alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
+                    }
+                },
+                error: function() {
+                    alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
+                },
+                complete: function () {
+                    isQuerying = false;
+                }
+            });
+        }
+
+        function createMessage() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Create", "MessageWall")",
+                data: { "nickname": $('#nickname').val(), "content": $('#content').val() },
+                dataType: "json",
+                headers: {
+                    'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
+                },
+                success: function(result) {
+                    if (checkTimeout(result)) {
+
+                        if (result.isSuccess) {
+                            $('#content').val('');
+                            var model = result.messageModel;
+                            if ($('.' + model.CreateDate).length > 0) {
+                                $('.' + model.CreateDate).after(bindMessageHtml(model));
+                            } else {
+                                $('#leave-message').after(bindMessageHtml(model));
+                            }
+                        } else {
+                            alertMessage('新增失敗，請稍後再試！', 'danger');
+                        }
+                    }
+                },
+                error: function(result) {
+                        alertMessage('伺服器忙碌中，請稍後再試！', 'danger');
+                }
+            });
+        }
+
+        function bindMessageHtml(messageModel) {
+            lastId = messageModel.Id;
+            var html = '';
+            if (date != messageModel.CreateDate)
+            {
+                html += '   <li class="time-label ' + messageModel.CreateDate + '">';
+                html += '       <span class="tag is-danger">' + messageModel.CreateDate + '</span>';
+                html += '   </li>';
+                date = messageModel.CreateDate;
+            }
+
+            html += '<li class="message">';
+            html += getIconHtml(messageModel.Id);
+            html += '   <div class="timeline-item">';
+            html += '       <span class="time"><i class="fa fa-clock-o"></i>' + messageModel.CreateTime + '</span>';
+            html += '       <h3 class="timeline-header">' + messageModel.Nickname + '</h3>';
+            html += '       <div class="timeline-body">';
+            html += getMessageHtml(messageModel.Content);
+            html += '       </div>';
+            html += '       <div class="timeline-footer"></div>';
+            html += '   </div>';
+            html += '</li>';
+
+            return html;
+        }
+
+        function getIconHtml(seq) {
+            var base = 3;
+            if (seq % base === 0) {
+                return '<span class="fa fa-envelope tag is-info"></span>';
+            } else if (seq % base === 1) {
+                return '<span class="fa fa-commenting-o tag is-danger"></span>';
+            } else {
+                return '<span class="fa fa-comments-o  tag is-primary"></span>';
+            }
+        }
+
+        function getMessageHtml(content) {
+            var result = '';
+            var lines = content.split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                result += '       <p>' + lines[i] + '</p>';
+            }
+            return result;
+        }
+
+        function alertMessage(message, type) {
+            $('#alert-message').html(message);
+
+            if (type === 'success')
+                $('.modal-alert').css('background-color', '#dff0d8');
+            else if (type === 'danger')
+                $('.modal-alert').css('background-color', '#f2dede');
+            else
+                $('.modal-alert').css('background-color', '#ffffff');
+
+            $('#modal-alert').modal('show');
+            setTimeout(function () { $('#modal-alert').modal('hide'); }, 3000);
+        }
+
+        $('#btn-cancel').on('click', function() {
+            $('#nickname, #content').val('');
+        });
+
+        $('#btn-send').on('click', function () {
+            if ($('#nickname').val() === '') {
+                alertMessage('請輸入暱稱！', 'danger');
+                $('#nickname').trigger('focus');
+            } else if ($('#content').val() === '') {
+                alertMessage('請輸入內容！', 'danger');
+                $('#content').trigger('focus');
+            } else {
+                createMessage();
+            }
+        });
+    });
+</script>
+} 
