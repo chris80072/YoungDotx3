@@ -2,35 +2,41 @@
 <html lang="zh-Hant-TW">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - 青春點點點</title>
     @Html.AntiForgeryToken()
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="~/Content/reset.css" rel="stylesheet" />
+    <link href="~/Content/reset.css" rel="stylesheet"/>
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        li, footer {
+        footer {
             color: #777;
             line-height: 1.8;
             font-weight: bold;
         }
         .sidenav {
-            display: block!important;
-            position: fixed!important;
-            background-color:rgba(0,0,0,0);
+            display: block !important;
+            position: fixed !important;
+            background-color: rgba(0, 0, 0, 0);
             height: 100%;
-            width: 300px;
+            width: 250px;
             z-index: 3;
             overflow: auto;
         }
         .li-link {
-            padding: 5px 0px 5px 10px;
+            padding: 10px 0px 10px 20px;
+        }
+        .li-link > a {
+            font-size: 18px;
+        }
+        .w3-opennav {
+            margin-left: 1em;
         }
         .sidenav-container {
-            margin-top: 50px;
+            margin-top: 30%;
             padding: 0.01em 16px;
         }
         .sidenav-container a {
@@ -38,48 +44,63 @@
         }
     </style>
 </head>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-90665667-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
 <body>
-    <nav class="w3-sidenav sidenav" id="sidenav">
+    <nav id="nav-left" class="w3-sidenav sidenav">
         <div class="w3-container sidenav-container">
-            <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo " title="close menu">
+            <a href="#" onclick="hideNav();" class="w3-hide-large w3-right w3-jumbo close-nav" title="close menu">
                 <i class="fa fa-remove"></i>
             </a>
         </div>
         <ul>
-            <li class="li-link"><a href="@Url.Action("Index", "Home")" onclick="w3_close();"><i class="fa fa-home" aria-hidden="true"></i> 首頁</a></li>
-            <li class="li-link"><a href="@Url.Action("Index", "HappyBirthday")" onclick="w3_close();"><i class="fa fa-birthday-cake" aria-hidden="true"></i> 生日快樂</a></li>
-            <li class="li-link"><a href="@Url.Action("Index", "MessageWall")" onclick="w3_close();"><i class="fa fa-child" aria-hidden="true"></i> 哈雷路亞</a></li>
+            <li class="li-link"><a href="@Url.Action("Index", "Home")" onclick="hideNav();"><i class="fa fa-home" aria-hidden="true"></i> 首頁</a></li>
+            <li class="li-link"><a href="@Url.Action("Index", "HappyBirthday")" onclick="hideNav();"><i class="fa fa-birthday-cake" aria-hidden="true"></i> 生日快樂</a></li>
+            <li class="li-link"><a href="@Url.Action("Index", "MessageWall")" onclick="hideNav();"><i class="fa fa-child" aria-hidden="true"></i> 哈雷路亞</a></li>
             <li class="li-link"><a href="https://www.facebook.com/YoungDotx3/?fref=ts" target="_blank"><i class="fa fa-facebook-official"></i> 臉書粉絲團</a></li>
             <li class="li-link"><a href="http://youngdotsagit.blogspot.tw/" target="_blank"><i class="fa fa-music" aria-hidden="true"></i> 錄音檔</a></li>
             <li class="li-link"><a href="http://hichannel.hinet.net/radio/index.do?id=232" target="_blank"><i class="fa fa-podcast" aria-hidden="true"></i> 線上收聽: 飛碟電台</a></li>
-            <li class="li-link"><a href="#" target="_blank"><i class="fa fa-handshake-o" aria-hidden="true"></i> 支持我們</a></li>
+            <li class="li-link"><a href="http://nbabull.wixsite.com/sponsor" target="_blank"><i class="fa fa-handshake-o" aria-hidden="true"></i> 支持我們</a></li>
             <li class="li-link"><a href="http://marcy.bigcartel.com/" target="_blank"><i class="fa fa-rocket" aria-hidden="true"></i> 限定商品</a></li>
         </ul>
     </nav>
-
-    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-    <div class="w3-main" style="margin-left:300px">
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="hideNav()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+    <div class="w3-main" style="margin-left: 250px">
+        <span class="w3-opennav w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="showNav()"><i class="fa fa-bars"></i></span>
         @RenderBody()
-        @*<footer class="w3-center w3-opacity w3-hover-opacity-off">
-            <p class="copyright">Copyright &copy; @DateTime.Now.Year Chris80072 All rights reserved</p>
-        </footer>*@
     </div>
-    
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/base")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
     <script>
-        function w3_open() {
-            document.getElementById("sidenav").style.display = "block";
-            document.getElementById("myOverlay").style.display = "block";
+        $(document).ready(function() {
+            var mq = window.matchMedia("(min-width: 500px)");
+
+            if (!mq.matches) {
+                hideNav();
+            }
+        });
+
+
+        function showNav() {
+            $("#nav-left").removeClass("hidden");
+            $("#myOverlay").removeClass("hidden");
         }
 
-        function w3_close() {
-            document.getElementById("sidenav").style.display = "none";
-            document.getElementById("myOverlay").style.display = "none";
+        function hideNav() {
+            $("#nav-left").addClass("hidden");
+            $("#myOverlay").addClass("hidden");
         }
     </script>
 </body>
