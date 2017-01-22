@@ -168,9 +168,9 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\HallelujahController.cs" />
     <Compile Include="Controllers\HappyBirthdayController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MessageWallController.cs" />
     <Compile Include="Filters\AjaxValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -240,8 +240,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\HappyBirthday\Index.cshtml" />
-    <Content Include="Views\MessageWall\Index.cshtml" />
     <Content Include="Views\Home\Intro.cshtml" />
+    <Content Include="Views\Hallelujah\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

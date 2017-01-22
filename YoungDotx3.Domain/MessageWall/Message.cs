@@ -63,7 +63,7 @@ namespace YoungDotx3.Domain.MessageWall
             jsonText.WritePropertyName("content");
             jsonText.WriteValue(Content);
             jsonText.WritePropertyName("createdatetime");
-            jsonText.WriteValue(CreateDateTime.AddHours(8).ToString(DateTimeFormat.ElasticDateTimeMappingFormat));
+            jsonText.WriteValue(CreateDateTime.ToString(DateTimeFormat.ElasticDateTimeMappingFormat));
             jsonText.WritePropertyName("ip");
             jsonText.WriteValue(ip);
             jsonText.WritePropertyName("isdelete");
