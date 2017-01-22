@@ -26,6 +26,9 @@
             z-index: 3;
             overflow: auto;
         }
+        .li-link, .close-nav {
+            color: #FFFFFF;
+        }
         .li-link {
             padding: 10px 0px 10px 20px;
         }
@@ -42,6 +45,16 @@
         .sidenav-container a {
             padding: 4px 2px 4px 16px;
         }
+        @@media (max-width: 736px) {
+            .sidenav {
+                background-color:rgba(0,0,0,0.8);
+            }
+	    }
+	    @@media (max-width: 360px) {
+            .sidenav {
+                background-color:rgba(0,0,0,0.8);
+            }
+	    }
     </style>
 </head>
 <script>
@@ -55,9 +68,9 @@
 
 </script>
 <body>
-    <nav id="nav-left" class="w3-sidenav sidenav">
+    <nav id="nav-left" class="w3-sidenav sidenav hidden">
         <div class="w3-container sidenav-container">
-            <a href="#" onclick="hideNav();" class="w3-hide-large w3-right w3-jumbo close-nav" title="close menu">
+            <a href="#" class="w3-hide-large w3-right w3-jumbo close-nav hide-nav" title="close menu">
                 <i class="fa fa-remove"></i>
             </a>
         </div>
@@ -72,9 +85,9 @@
             <li class="li-link"><a href="http://marcy.bigcartel.com/" target="_blank"><i class="fa fa-rocket" aria-hidden="true"></i> 限定商品</a></li>
         </ul>
     </nav>
-    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="hideNav()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+    <div class="w3-overlay w3-hide-large w3-animate-opacity hide-nav" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
     <div class="w3-main" style="margin-left: 250px">
-        <span class="w3-opennav w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="showNav()"><i class="fa fa-bars"></i></span>
+        <span id="show-nav" class="w3-opennav w3-hide-large w3-xxlarge w3-hover-text-grey"><i class="fa fa-bars"></i></span>
         @RenderBody()
     </div>
 
@@ -84,24 +97,41 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        $(document).ready(function() {
-            var mq = window.matchMedia("(min-width: 500px)");
-
-            if (!mq.matches) {
-                hideNav();
+        $(document).ready(function () {
+            function showNav() {
+                $("#nav-left").removeClass("hidden");
+                $("#myOverlay").removeClass("hidden");
             }
+            function hideNav() {
+                $("#nav-left").addClass("hidden");
+                $("#myOverlay").addClass("hidden");
+            }
+            $('#show-nav').on('click', function () {
+                showNav();
+            });
+            $('.hide-nav').on('click', function () {
+                hideNav();
+            });
+            //check mobile device
+            function isMobile() {
+                if (navigator.userAgent.match(/Android/i)
+                || navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i)
+                || navigator.userAgent.match(/BlackBerry/i)
+                || navigator.userAgent.match(/Windows Phone/i)
+                ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+
+            if (!isMobile())
+                showNav();
         });
-
-
-        function showNav() {
-            $("#nav-left").removeClass("hidden");
-            $("#myOverlay").removeClass("hidden");
-        }
-
-        function hideNav() {
-            $("#nav-left").addClass("hidden");
-            $("#myOverlay").addClass("hidden");
-        }
     </script>
 </body>
 </html>
