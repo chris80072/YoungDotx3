@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using YoungDotx3.App_Start;
 
 namespace YoungDotx3
 {
@@ -16,6 +17,8 @@ namespace YoungDotx3
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            DBConfig.Register();
         }
     }
 }

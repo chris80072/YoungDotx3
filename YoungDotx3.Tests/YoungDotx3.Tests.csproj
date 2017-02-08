@@ -40,6 +40,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
@@ -84,6 +85,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="ServiceTest\HallelujahServiceTests.cs" />
+    <Compile Include="ServiceTest\HappyBirthdayServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -92,11 +95,24 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\YoungDotx3.DAO\YoungDotx3.DAO.csproj">
+      <Project>{9c1736b3-8eca-4df9-b51f-e6fb5783a6b3}</Project>
+      <Name>YoungDotx3.DAO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungDotx3.Domain\YoungDotx3.Domain.csproj">
+      <Project>{368a9a23-4d7f-400b-96aa-b39391c39486}</Project>
+      <Name>YoungDotx3.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoungDotx3.Service\YoungDotx3.Service.csproj">
+      <Project>{17cc0109-1d5c-4bff-8cb4-726719c68ac7}</Project>
+      <Name>YoungDotx3.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YoungDotx3\YoungDotx3.csproj">
       <Project>{A882ADD2-EB2B-4CE4-945E-74FEF484B5CD}</Project>
       <Name>YoungDotx3</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using YoungDotx3.DAO.MySQL;
 using YoungDotx3.Domain;
 using YoungDotx3.Domain.Calendar;
 
@@ -96,6 +97,66 @@ namespace YoungDotx3.Service
             {
                 log.Error($"Response = {response}", e);
                 throw;
+            }
+        }
+
+        public void CreateMessage(Domain.HappyBirthday.Message message)
+        {
+            HappyBirthdayDAO dao = new HappyBirthdayDAO();
+            try
+            {
+                dao.Open(DBConn.Conn);
+                message.SetIpAddress(NetWorkService.GetIpAddress());
+                dao.Insert(message);
+            }
+            catch (Exception e)
+            {
+                log.Error(e, e);
+            }
+            finally
+            {
+                if (dao.Connection != null)
+                    dao.Connection.Close();
+            }
+        }
+
+        public Domain.HappyBirthday.Message GetMessage(string id)
+        {
+            HappyBirthdayDAO dao = new HappyBirthdayDAO();
+            try
+            {
+                dao.Open(DBConn.Conn);
+                return dao.Selete(id);
+            }
+            catch (Exception e)
+            {
+                log.Error(e, e);
+                return null;
+            }
+            finally
+            {
+                if (dao.Connection != null)
+                    dao.Connection.Close();
+            }
+        }
+
+        public List<Domain.HappyBirthday.Message> GetMessages()
+        {
+            HappyBirthdayDAO dao = new HappyBirthdayDAO();
+            try
+            {
+                dao.Open(DBConn.Conn);
+                return dao.SeleteAll();
+            }
+            catch (Exception e)
+            {
+                log.Error(e, e);
+                return new List<Domain.HappyBirthday.Message>();
+            }
+            finally
+            {
+                if (dao.Connection != null)
+                    dao.Connection.Close();
             }
         }
     }

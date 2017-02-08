@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using YoungDotx3.Domain;
 
 namespace YoungDotx3.Models.Calendar
 {
@@ -10,6 +11,7 @@ namespace YoungDotx3.Models.Calendar
         public MonthModels()
         {
             Messages = new List<MessageModels>();
+            Today = DateTime.Now.ToString(DateTimeFormat.DateWithHyphen);
         }
 
         public MonthModels(Domain.Calendar.Month month)

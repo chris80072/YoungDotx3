@@ -197,7 +197,7 @@
     $(document).ready(function () {
 
         var date = '';
-        var lastId = 0;
+        var lastId;
         var page = 1;
         var isQuerying = false;
         getMessages();
@@ -217,7 +217,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("GetMessages", "Hallelujah")",
-                data: { "page": page },
+                data: { "id": lastId },
                 dataType: "json",
                 headers: {
                     'RequestVerificationToken': '@CommonRazorFunctions.GetAntiForgeryToken()'
@@ -225,7 +225,7 @@
                 success: function(result) {
                     if (checkTimeout(result)) {
                         page++;
-                        var models = result.messageModels;
+                        var models = result.messages;
                         for (var i = 0; i < models.length > 0; i++) {
                             $('#initial').before(bindMessageHtml(models[i]));
                         }

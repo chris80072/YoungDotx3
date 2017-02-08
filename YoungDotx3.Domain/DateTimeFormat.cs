@@ -12,7 +12,8 @@ namespace YoungDotx3.Domain
         public static string Time = "HH:mm";
         public static string DateWithSlash = "yyyy/MM/dd";
         public static string DateWithHyphen = "yyyy-MM-dd";
-        
+
+        public static string DateAndTime = "yyyy/MM/dd HH:mm:ss";
         public static string ElasticDateTimeMappingFormat = "yyyy-MM-dd HH:mm:ss";
     }
 }

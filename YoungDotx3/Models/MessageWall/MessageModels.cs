@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using YoungDotx3.Domain.Hallelujah;
 
 namespace YoungDotx3.Models.MessageWall
 {
     public class MessageModels
     {
-        public MessageModels(Domain.MessageWall.Message message)
+        public MessageModels(Message message)
         {
             this.Id = message.Id;
             this.Nickname = message.Nickname;
             this.Content = message.Content;
-            this.CreateDate = message.CreateDateTime.ToString(Domain.DateTimeFormat.DateWithHyphen);
-            this.CreateTime = message.CreateDateTime.ToString(Domain.DateTimeFormat.Time);
+            this.CreateDate = message.CreateDate.ToString(Domain.DateTimeFormat.DateWithHyphen);
+            this.CreateTime = message.CreateDate.ToString(Domain.DateTimeFormat.Time);
         }
 
         public string Id { get; set; }

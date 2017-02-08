@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using YoungDotx3.Domain;
 using YoungDotx3.Filters;
 using YoungDotx3.Models.MessageWall;
+using YoungDotx3.Service;
+using YoungDotx3.Domain.Hallelujah;
 
 namespace YoungDotx3.Controllers
 {
@@ -26,14 +28,13 @@ namespace YoungDotx3.Controllers
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
         [AjaxValidateAntiForgeryToken]
-        public ActionResult GetMessages(int page)
+        public ActionResult GetMessages(string id)
         {
-            Service.MessageWallService service = new Service.MessageWallService();
-            var messages = service.GetMessages(page);
+            HallelujahService service = new HallelujahService();
+            var messages = service.GetMessages(id);
             List<MessageModels> messageModelses = new List<MessageModels>();
-            messageModelses.AddRange(messages.Messages.Select(val => new MessageModels(val)));
-
-            return Content(JsonConvert.SerializeObject(new { messageModels = messageModelses }), "application/json");
+            messageModelses.AddRange(messages.Select(val => new MessageModels(val)));
+            return Content(JsonConvert.SerializeObject(new { messages = messageModelses }), "application/json");
         }
 
         [HttpPost]
@@ -41,15 +42,24 @@ namespace YoungDotx3.Controllers
         [AjaxValidateAntiForgeryToken]
         public ActionResult Create(string nickname, string content)
         {
-            var message = new Domain.MessageWall.Message
+            bool result = false;
+            Message message = null;
+            try
             {
-                Nickname = nickname,
-                Content = content,
-                CreateDateTime = DateTime.Now.AddHours(8)
-            };
+                message = new Message
+                {
+                    Nickname = nickname,
+                    Content = content,
+                };
 
-            Service.MessageWallService service = new Service.MessageWallService();
-            bool result = service.CreateMessage(message);
+                HallelujahService service = new HallelujahService();
+                service.CreateMessage(message);
+
+                result = !string.IsNullOrEmpty(message.Id);
+            }
+            catch (Exception)
+            {
+            }
 
             return Content(JsonConvert.SerializeObject(new { isSuccess = result, messageModel = new MessageModels(message) }), "application/json");
         }

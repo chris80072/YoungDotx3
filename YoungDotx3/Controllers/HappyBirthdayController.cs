@@ -18,8 +18,9 @@ namespace YoungDotx3.Controllers
         {
             Service.HappyBirthdayService service = new Service.HappyBirthdayService();
             MonthModels month = new MonthModels();
-            month.Today = DateTime.Now.ToString("yyyy-MM-dd");
-            var messages = service.GetMessagesByMonth();
+            //month.Today = DateTime.Now.ToString("yyyy-MM-dd");
+            //var messages = service.GetMessagesByMonth();
+            var messages = service.GetMessages();
             month.Messages.AddRange(messages.Select(val => new MessageModels(val)));
             return View(month);
         }
@@ -31,18 +32,25 @@ namespace YoungDotx3.Controllers
         {
             bool result = false;
 
-            if (Convert.ToDateTime(createDate) > DateTime.Now)
+            try
             {
-                var message = new Domain.Calendar.Message
+                if (Convert.ToDateTime(createDate) > DateTime.Now)
                 {
-                    Nickname = nickname,
-                    Content = content,
-                    Color = color,
-                    CreateDate = createDate
-                };
+                    var message = new Domain.HappyBirthday.Message
+                    {
+                        Nickname = nickname,
+                        Content = content,
+                        ColorCode = color,
+                        Date = Convert.ToDateTime(createDate)
+                    };
 
-                Service.HappyBirthdayService service = new Service.HappyBirthdayService();
-                result = service.CreateMessage(message);
+                    Service.HappyBirthdayService service = new Service.HappyBirthdayService();
+                    service.CreateMessage(message);
+                    result = !string.IsNullOrEmpty(message.Id);
+                }
+            }
+            catch (Exception)
+            {
             }
 
             return Content(JsonConvert.SerializeObject(new { Result = result }), "application/json");
