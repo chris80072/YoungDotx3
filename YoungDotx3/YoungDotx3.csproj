@@ -172,6 +172,7 @@
     <Compile Include="Controllers\HallelujahController.cs" />
     <Compile Include="Controllers\HappyBirthdayController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RequestSongsController.cs" />
     <Compile Include="Filters\AjaxValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,7 +192,11 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fullcalendar-3.0.0\fullcalendar.css" />
+    <Content Include="Content\hallelujah.css" />
+    <Content Include="Content\happybirthday.css" />
+    <Content Include="Content\home.css" />
     <Content Include="Content\Image\upup_welcome.jpg" />
+    <Content Include="Content\intro.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\sidebar.css" />
     <Content Include="favicon.ico" />
@@ -214,6 +219,10 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Properties\PublishProfiles\YoungDotx3.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\ga.js" />
+    <Content Include="Scripts\hallelujah.js" />
+    <Content Include="Scripts\happybirthday.js" />
+    <Content Include="Scripts\home.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -223,6 +232,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -243,6 +253,7 @@
     <Content Include="Views\HappyBirthday\Index.cshtml" />
     <Content Include="Views\Home\Intro.cshtml" />
     <Content Include="Views\Hallelujah\Index.cshtml" />
+    <Content Include="Views\RequestSongs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

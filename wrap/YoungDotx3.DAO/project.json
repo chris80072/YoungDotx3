@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net452": {
+      "wrappedProject": "../../YoungDotx3.DAO/YoungDotx3.DAO.csproj",
+      "bin": {
+        "assembly": "../../YoungDotx3.DAO/obj/{configuration}/YoungDotx3.DAO.dll",
+        "pdb": "../../YoungDotx3.DAO/obj/{configuration}/YoungDotx3.DAO.pdb"
+      },
+      "dependencies": {
+        "MySql.Data": "6.9.9",
+        "YoungDotx3.Domain": "1.0.0-*"
+      }
+    }
+  }
+}

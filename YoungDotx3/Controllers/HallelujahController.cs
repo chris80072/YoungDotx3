@@ -50,6 +50,7 @@ namespace YoungDotx3.Controllers
                 {
                     Nickname = nickname,
                     Content = content,
+                    CreateDate = DateTime.Now
                 };
 
                 HallelujahService service = new HallelujahService();

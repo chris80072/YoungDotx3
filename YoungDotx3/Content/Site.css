@@ -1,16 +1,6 @@
-﻿/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
+﻿.dl-horizontal dt {
     white-space: normal;
 }
-
-/* Set width on the form input elements since they're 100% wide by default */
-/*input,
-select,
-textarea {
-    max-width: 280px;
-}*/
 
 body, html {
     /* important */
@@ -23,4 +13,51 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
+}
+
+footer {
+    color: #777;
+    line-height: 1.8;
+    font-weight: bold;
+}
+.sidenav {
+    display: block !important;
+    position: fixed !important;
+    background-color: rgba(0, 0, 0, 0);
+    height: 100%;
+    width: 250px;
+    z-index: 3;
+    overflow: auto;
+}
+.li-link {
+    padding: 10px 0px 10px 20px;
+}
+.li-link > a {
+    font-size: 18px;
+}
+.w3-opennav {
+    margin-left: 1em;
+}
+.sidenav-container {
+    margin-top: 30%;
+    padding: 0.01em 16px;
+}
+.sidenav-container a {
+    padding: 4px 2px 4px 16px;
+}
+@media (max-width: 736px) {
+    .sidenav {
+        background-color:rgba(0,0,0,0.8);
+    }
+    .li-link, .close-nav {
+        color: #FFFFFF;
+    }
+}
+@media (max-width: 360px) {
+    .sidenav {
+        background-color:rgba(0,0,0,0.8);
+    }
+    .li-link, .close-nav {
+        color: #FFFFFF;
+    }
 }

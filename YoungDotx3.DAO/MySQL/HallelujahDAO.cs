@@ -32,6 +32,30 @@ namespace YoungDotx3.DAO.MySQL
             return num > 0;
         }
 
+        public bool InsertBatch(List<Message> messages)
+        {
+            if (messages.Count.Equals(0))
+                return false;
+
+            MySqlCommand command = connection.CreateCommand();
+            StringBuilder builder = new StringBuilder();
+            builder.Append("INSERT INTO hallelujah (NickName, Content, IpAddress, CreateDate) VALUES ");
+
+            for (int i = 0; i < messages.Count; i++)
+            {
+                builder.Append($"(?NickName{i}, ?Content{i}, ?IpAddress{i}, ?CreateDate{i}),");
+                command.Parameters.AddWithValue($"?NickName{i}", messages[i].Nickname);
+                command.Parameters.AddWithValue($"?Content{i}", messages[i].Content);
+                command.Parameters.AddWithValue($"?IpAddress{i}", messages[i].IpAddress);
+                command.Parameters.AddWithValue($"?CreateDate{i}", messages[i].CreateDate);
+            }
+
+            var strSQL = builder.ToString();
+            command.CommandText = strSQL.Substring(0, strSQL.Length - 1);
+            int num = command.ExecuteNonQuery();
+            return num > 0;
+        }
+
         public Message Selete(string id)
         {
             Message result = null;
